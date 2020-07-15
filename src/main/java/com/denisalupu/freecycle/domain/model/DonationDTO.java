@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -32,7 +33,10 @@ public class DonationDTO {
 
     private List<PictureDTO> pictures;
 
+    private Set<UserDTO> userRequests;
 
     //timestamp posted
-    //timestamp last edited
+    //timestamp last edited?
+
+
 }

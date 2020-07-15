@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class EntityToDTOMapper {
     private ModelMapper modelMapper = new ModelMapper();
 
-    public DonationDTO mapper(DonationEntity source) {
+    public DonationDTO donationMapper(DonationEntity source) {
         return modelMapper.map(source, DonationDTO.class);
     }
 

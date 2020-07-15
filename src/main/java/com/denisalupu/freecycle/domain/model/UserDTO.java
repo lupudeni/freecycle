@@ -32,5 +32,7 @@ public class UserDTO {
 
     private List<DonationDTO> receivedObjects;
 
+    private Set<DonationDTO> donationRequests;
+
 
 }

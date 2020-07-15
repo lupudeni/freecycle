@@ -19,7 +19,6 @@ public class CategoryDTO {
 
     private CategoryName categoryName;
 
-    //do i have to have a list for this?
     private List<DonationDTO> donations;
 
 }

@@ -39,4 +39,14 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "receiver")
     private List<DonationEntity> receivedObjects;
+
+    /**
+     * Resources and ideas for the Many to Many relationship:
+     * https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
+     */
+
+    @ManyToMany(mappedBy = "userRequests")
+    private Set<DonationEntity> requestedDonations;
+
 }
+

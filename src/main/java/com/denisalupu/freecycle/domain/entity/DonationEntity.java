@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 
 @Data
@@ -46,5 +47,19 @@ public class DonationEntity {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "donation")
     private List<PictureEntity> pictures;
+
+    /**
+     * Resources and ideas for the Many to Many relationship:
+     * https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
+     */
+
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
+    @JoinTable(name = "requests",
+            joinColumns = @JoinColumn(name = "donation_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<UserEntity> userRequests;
 
 }
