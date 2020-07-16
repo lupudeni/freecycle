@@ -11,7 +11,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RequestDTO {
 
-    private UserDTO userDTO;
+//    private UserDTO userDTO;
+//
+//    private DonationDTO donationDTO;
 
-    private DonationDTO donationDTO;
+    private Long userId;
+
+    private Long donationId;
 }

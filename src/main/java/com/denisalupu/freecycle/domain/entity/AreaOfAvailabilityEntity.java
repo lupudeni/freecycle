@@ -1,9 +1,6 @@
 package com.denisalupu.freecycle.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -28,5 +25,6 @@ public class AreaOfAvailabilityEntity {
     //TODO:take this out of equals and hashcode?
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "area")
+    @ToString.Exclude
     private List<DonationEntity> donations;
 }

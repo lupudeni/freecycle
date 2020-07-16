@@ -55,12 +55,14 @@ public class UserService {
         return entityToDTOMapper.userMapper(existingUserEntity);
     }
 
+    public UserEntity findEntityById(long id) {
+        return userRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("User entity with id '" + id + "' not found"));
+    }
 
     public UserDTO findById(long id) {
-        Optional<UserEntity> userEntityOptional = userRepository.findById(id);
-        UserEntity userEntity = userEntityOptional.orElseThrow(
-                () -> new EntityNotFoundException("User entity with id '" + id + "' not found"));
-        return entityToDTOMapper.userMapper(userEntity);
+        UserEntity user = findEntityById(id);
+        return entityToDTOMapper.userMapper(user);
     }
 
     public UserDTO findByUserName(String userName) {

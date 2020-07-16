@@ -2,10 +2,8 @@ package com.denisalupu.freecycle.service;
 
 import com.denisalupu.freecycle.domain.entity.DonationEntity;
 import com.denisalupu.freecycle.domain.entity.UserEntity;
-import com.denisalupu.freecycle.domain.model.AreaOfAvailabilityDTO;
-import com.denisalupu.freecycle.domain.model.CategoryDTO;
-import com.denisalupu.freecycle.domain.model.DonationDTO;
-import com.denisalupu.freecycle.domain.model.UserDTO;
+import com.denisalupu.freecycle.domain.model.*;
+import com.denisalupu.freecycle.exception.BadRequestException;
 import com.denisalupu.freecycle.exception.EntityNotFoundException;
 import com.denisalupu.freecycle.mapper.DTOToEntityMapper;
 import com.denisalupu.freecycle.mapper.EntityToDTOMapper;
@@ -15,6 +13,7 @@ import com.denisalupu.freecycle.utils.Status;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -22,6 +21,10 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class DonationService {
+
+    public static final int MAX_USER_REQUESTS_PER_DONATION = 5;
+
+    private final UserService userService;
     private final DonationRepository donationRepository;
     private final DTOToEntityMapper dtoToEntityMapper;
     private final EntityToDTOMapper entityToDTOMapper;
@@ -33,11 +36,15 @@ public class DonationService {
         return entityToDTOMapper.donationMapper(savedDonationEntity);
     }
 
+
+    private DonationEntity findEntityById(long id) {
+        return donationRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Donation with id '" + id + "' not found"));
+    }
+
     //this is useless
     public DonationDTO findById(long id) {
-        Optional<DonationEntity> optionalDonationEntity = donationRepository.findById(id);
-        DonationEntity donationEntity = optionalDonationEntity.orElseThrow(
-                () -> new EntityNotFoundException("Donation with id '" + id + "' not found"));
+        DonationEntity donationEntity = findEntityById(id);
         return entityToDTOMapper.donationMapper(donationEntity);
     }
 
@@ -86,9 +93,20 @@ public class DonationService {
     }
 
     @Transactional
+    public void requestDonation(RequestDTO request) {
+        DonationEntity existingDonationEntity = findEntityById(request.getDonationId());
+        Set<UserEntity> userRequests = existingDonationEntity.getUserRequests();
+        if (userRequests.size() >= MAX_USER_REQUESTS_PER_DONATION) {
+            throw new BadRequestException("This donation cannot receive any more requests");
+        }
+
+        UserEntity user = userService.findEntityById(request.getUserId());
+        userRequests.add(user);
+    }
+
+    @Transactional
     public DonationDTO update(DonationDTO donationDTO) {
-        DonationEntity existingDonationEntity = donationRepository.findById(donationDTO.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Donation not found"));
+        DonationEntity existingDonationEntity = findEntityById(donationDTO.getId());
         return updateFields(existingDonationEntity, donationDTO);
     }
 

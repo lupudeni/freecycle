@@ -1,10 +1,7 @@
 package com.denisalupu.freecycle.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -36,9 +33,11 @@ public class UserEntity {
     private String phone;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "donor")
+    @ToString.Exclude
     private List<DonationEntity> donatedObjects;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
+    @ToString.Exclude
     private List<DonationEntity> receivedObjects;
 
     /**
@@ -47,6 +46,7 @@ public class UserEntity {
      */
 
     @ManyToMany(mappedBy = "userRequests")
+    @ToString.Exclude
     private Set<DonationEntity> requestedDonations;
 
 }

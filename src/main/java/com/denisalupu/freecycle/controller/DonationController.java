@@ -6,6 +6,7 @@ import com.denisalupu.freecycle.utils.SortOrder;
 import com.denisalupu.freecycle.utils.Status;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -106,18 +107,11 @@ public class DonationController {
     public DonationDTO updateDonation(@RequestBody DonationDTO donationDTO) {
         return donationService.update(donationDTO);
     }
-//am mutat metoda din service aici, tot nu merge, tot ca curu este
+
     @PutMapping("/request")
     @ResponseStatus(HttpStatus.OK)
-    public DonationDTO requestDonation(@RequestBody RequestDTO requestDTO) {
-        UserDTO userDTO = requestDTO.getUserDTO();
-        DonationDTO donationDTO = requestDTO.getDonationDTO();
-        Set<UserDTO> userRequests = donationDTO.getUserRequests();
-        if (userRequests.size() < 5) {
-            userRequests.add(userDTO);
-        }
-        donationDTO.setUserRequests(userRequests);
-        return donationService.update(donationDTO);
+    public void requestDonation(@RequestBody RequestDTO requestDTO) {
+        donationService.requestDonation(requestDTO);
     }
 
 }
