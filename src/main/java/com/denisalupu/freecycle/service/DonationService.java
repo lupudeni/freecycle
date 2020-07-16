@@ -60,18 +60,6 @@ public class DonationService {
                 .map(entityToDTOMapper::donationMapper)
                 .collect(Collectors.toList());
     }
-//TODO: something here gives -> org.hibernate.PersistentObjectException: detached entity passed to persist.
-// This doesn't work. ceva idee de pe stack overflow ar spune ca e din cauza ca eu ii dau un obiect cu idul
-// gata definit si el incearca sa il genereze peste
-    @Transactional
-    public DonationDTO requestDonation(UserDTO userDTO, DonationDTO donationDTO) {
-        Set<UserDTO> userRequests = donationDTO.getUserRequests();
-        if (userRequests.size() < 5) {
-            userRequests.add(userDTO);
-        }
-        donationDTO.setUserRequests(userRequests);
-       return update(donationDTO);
-    }
 
     public List<DonationDTO> findAllByStatus(Status[] statuses) {
         List<DonationEntity> donationEntities = donationRepository.findAllByStatusIn(List.of(statuses));
@@ -93,7 +81,7 @@ public class DonationService {
     }
 
     @Transactional
-    public void requestDonation(RequestDTO request) {
+    public DonationDTO requestDonation(RequestDTO request) {
         DonationEntity existingDonationEntity = findEntityById(request.getDonationId());
         Set<UserEntity> userRequests = existingDonationEntity.getUserRequests();
         if (userRequests.size() >= MAX_USER_REQUESTS_PER_DONATION) {
@@ -102,6 +90,8 @@ public class DonationService {
 
         UserEntity user = userService.findEntityById(request.getUserId());
         userRequests.add(user);
+        return entityToDTOMapper.donationMapper(existingDonationEntity);
+
     }
 
     @Transactional

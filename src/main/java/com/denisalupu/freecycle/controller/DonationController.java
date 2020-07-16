@@ -110,8 +110,8 @@ public class DonationController {
 
     @PutMapping("/request")
     @ResponseStatus(HttpStatus.OK)
-    public void requestDonation(@RequestBody RequestDTO requestDTO) {
-        donationService.requestDonation(requestDTO);
+    public DonationDTO requestDonation(@RequestBody RequestDTO requestDTO) {
+       return donationService.requestDonation(requestDTO);
     }
 
 }
