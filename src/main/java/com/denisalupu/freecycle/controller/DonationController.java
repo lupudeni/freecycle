@@ -65,7 +65,6 @@ public class DonationController {
      * @return
      */
 
-    //TODO why doesn't this work???!!!!!
     @GetMapping("/getByStatus")
     @ResponseStatus(HttpStatus.OK)
     public List<DonationDTO> getAllByStatus(@RequestParam("statuses") Status[] statuses) {
@@ -81,7 +80,6 @@ public class DonationController {
      * @param title
      * @return
      */
-
 
     @GetMapping("/findDonations")
     @ResponseStatus(HttpStatus.OK)
