@@ -18,7 +18,7 @@ public class PictureEntity {
 
     private byte[] picture;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "donation_id")
     private DonationEntity donation;
 }

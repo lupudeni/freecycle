@@ -1,6 +1,7 @@
 package com.denisalupu.freecycle.domain.model;
 
 import com.denisalupu.freecycle.utils.CategoryName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +20,7 @@ public class CategoryDTO {
 
     private CategoryName categoryName;
 
-    private List<DonationDTO> donations;
+//    @JsonIgnore
+//    private List<DonationDTO> donations;
 
 }

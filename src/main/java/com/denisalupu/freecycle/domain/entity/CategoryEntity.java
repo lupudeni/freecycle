@@ -25,7 +25,7 @@ public class CategoryEntity {
     @Enumerated(EnumType.STRING)
     private CategoryName categoryName;
 
-    @OneToMany(mappedBy = "category")
-    private List<DonationEntity> donations;
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
+//    private List<DonationEntity> donations;
 
 }

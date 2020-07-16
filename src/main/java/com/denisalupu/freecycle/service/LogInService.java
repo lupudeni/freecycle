@@ -10,9 +10,9 @@ public class LogInService {
     private final UserService userService;
 
     //logIn -> verify if username and password match data base
-    public boolean logIn(String userName, String password) {
-       UserDTO userDTO = userService.findByUserName(userName);
-        return userDTO.getPassword().equals(password);
-    }
+//    public boolean logIn(String userName, String password) {
+//       UserDTO userDTO = userService.findByUserName(userName);
+//        return userDTO.getPassword().equals(password);
+//    }
 
 }

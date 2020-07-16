@@ -1,6 +1,5 @@
 package com.denisalupu.freecycle.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,12 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PictureDTO {
+public class RequestDTO {
 
-    private long id;
+    private UserDTO userDTO;
 
-    private byte[] picture;
-    @JsonIgnore
-    private DonationDTO donation;
-
+    private DonationDTO donationDTO;
 }

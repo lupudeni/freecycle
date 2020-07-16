@@ -30,22 +30,22 @@ public class DonationEntity {
 
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "area_id")
     private AreaOfAvailabilityEntity area;
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "donor_id")
     private UserEntity donor;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id")
     private UserEntity receiver;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "donation")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donation")
     private List<PictureEntity> pictures;
 
     /**

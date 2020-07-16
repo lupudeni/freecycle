@@ -1,5 +1,6 @@
 package com.denisalupu.freecycle.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,16 +29,16 @@ public class UserEntity {
 
     private String userName;
 
-    private String password;
+//    private String password;
 
     private String email;
 
     private String phone;
 
-    @OneToMany(mappedBy = "donor")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donor")
     private List<DonationEntity> donatedObjects;
 
-    @OneToMany(mappedBy = "receiver")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
     private List<DonationEntity> receivedObjects;
 
     /**

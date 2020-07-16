@@ -1,6 +1,7 @@
 package com.denisalupu.freecycle.service;
 
 import com.denisalupu.freecycle.domain.entity.DonationEntity;
+import com.denisalupu.freecycle.domain.entity.UserEntity;
 import com.denisalupu.freecycle.domain.model.AreaOfAvailabilityDTO;
 import com.denisalupu.freecycle.domain.model.CategoryDTO;
 import com.denisalupu.freecycle.domain.model.DonationDTO;
@@ -52,15 +53,17 @@ public class DonationService {
                 .map(entityToDTOMapper::donationMapper)
                 .collect(Collectors.toList());
     }
-
+//TODO: something here gives -> org.hibernate.PersistentObjectException: detached entity passed to persist.
+// This doesn't work. ceva idee de pe stack overflow ar spune ca e din cauza ca eu ii dau un obiect cu idul
+// gata definit si el incearca sa il genereze peste
     @Transactional
-    public void requestDonation(UserDTO userDTO, DonationDTO donationDTO) {
+    public DonationDTO requestDonation(UserDTO userDTO, DonationDTO donationDTO) {
         Set<UserDTO> userRequests = donationDTO.getUserRequests();
-        if (userRequests == null) {
-            userRequests = new HashSet<>();
-        } else if (userRequests.size() < 5) {
+        if (userRequests.size() < 5) {
             userRequests.add(userDTO);
         }
+        donationDTO.setUserRequests(userRequests);
+       return update(donationDTO);
     }
 
     public List<DonationDTO> findAllByStatus(Status[] statuses) {
@@ -95,7 +98,14 @@ public class DonationService {
         existingDonationEntity.setDescription(donationDTO.getDescription());
         existingDonationEntity.setArea(dtoToEntityMapper.areaMapper(donationDTO.getArea()));
         existingDonationEntity.setStatus(donationDTO.getStatus());
-        existingDonationEntity.setReceiver(dtoToEntityMapper.userMapper(donationDTO.getReceiver()));
+       UserDTO receiver = donationDTO.getReceiver();
+       if (receiver != null) {
+           existingDonationEntity.setReceiver(dtoToEntityMapper.userMapper(receiver));
+       }
+       Set<UserEntity> userRequests = donationDTO.getUserRequests().stream()
+               .map(dtoToEntityMapper::userMapper)
+               .collect(Collectors.toSet());
+        existingDonationEntity.setUserRequests(userRequests);
 
         return entityToDTOMapper.donationMapper(existingDonationEntity);
     }

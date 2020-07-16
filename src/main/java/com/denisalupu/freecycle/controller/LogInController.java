@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class LogInController {
    private final LogInService logInService;
 
-    @PostMapping("/logIn")
-    public boolean logIn(@RequestParam("userName") String userName, @RequestParam("password") String password) {
-        return logInService.logIn(userName, password);
-    }
+//    @PostMapping("/logIn")
+//    public boolean logIn(@RequestParam("userName") String userName, @RequestParam("password") String password) {
+//        return logInService.logIn(userName, password);
+//    }
 
 }

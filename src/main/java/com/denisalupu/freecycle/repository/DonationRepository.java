@@ -40,7 +40,7 @@ public interface DonationRepository extends JpaRepository<DonationEntity, Long> 
 
     //TODO: sort by recently posted -> ulala, add timestamps
 
-    //find by donor
+    //find by donor //TODO this
     List<DonationEntity> findAllByDonor(UserEntity donor);
 
     //delete

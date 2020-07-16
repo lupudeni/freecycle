@@ -1,8 +1,6 @@
 package com.denisalupu.freecycle.controller;
 
-import com.denisalupu.freecycle.domain.model.AreaOfAvailabilityDTO;
-import com.denisalupu.freecycle.domain.model.CategoryDTO;
-import com.denisalupu.freecycle.domain.model.DonationDTO;
+import com.denisalupu.freecycle.domain.model.*;
 import com.denisalupu.freecycle.service.DonationService;
 import com.denisalupu.freecycle.utils.SortOrder;
 import com.denisalupu.freecycle.utils.Status;
@@ -11,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("donations")
@@ -18,6 +17,7 @@ import java.util.List;
 public class DonationController {
     private final DonationService donationService;
 
+    //TODO add status of available from here
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public DonationDTO create(@RequestBody DonationDTO donationDTO) {
@@ -75,6 +75,7 @@ public class DonationController {
      * Method used for the frontend option "request" -> "find donations":
      * Method  filters based on the donation objects with the status "AVAILABLE",
      * matching the 3 parameters passed.
+     *
      * @param category
      * @param area
      * @param title
@@ -105,6 +106,18 @@ public class DonationController {
     public DonationDTO updateDonation(@RequestBody DonationDTO donationDTO) {
         return donationService.update(donationDTO);
     }
-
+//am mutat metoda din service aici, tot nu merge, tot ca curu este
+    @PutMapping("/request")
+    @ResponseStatus(HttpStatus.OK)
+    public DonationDTO requestDonation(@RequestBody RequestDTO requestDTO) {
+        UserDTO userDTO = requestDTO.getUserDTO();
+        DonationDTO donationDTO = requestDTO.getDonationDTO();
+        Set<UserDTO> userRequests = donationDTO.getUserRequests();
+        if (userRequests.size() < 5) {
+            userRequests.add(userDTO);
+        }
+        donationDTO.setUserRequests(userRequests);
+        return donationService.update(donationDTO);
+    }
 
 }

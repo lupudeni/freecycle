@@ -27,6 +27,6 @@ public class AreaOfAvailabilityEntity {
 
     //TODO:take this out of equals and hashcode?
 
-    @OneToMany(mappedBy = "area")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "area")
     private List<DonationEntity> donations;
 }

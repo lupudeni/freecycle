@@ -11,12 +11,6 @@ import java.util.Optional;
 @Repository
 public interface PictureRepository extends JpaRepository<PictureEntity, Long> {
 
-    //find by id
-    Optional<PictureEntity> findById(long id);
-
-    //find all by donation
-    List<PictureEntity> findAllByDonation(DonationEntity donation);
-
     //delete
     void deleteById(long id);
 }

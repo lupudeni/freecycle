@@ -1,5 +1,6 @@
 package com.denisalupu.freecycle.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,14 +14,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AreaOfAvailabilityDTO {
-   //TODO:take this out of equals and hashcode?
     private long id;
 
     private String country;
 
     private String city;
 
-    //TODO:take this out of equals and hashcode?
+    @JsonIgnore
     private List<DonationDTO> donations;
 
 }
