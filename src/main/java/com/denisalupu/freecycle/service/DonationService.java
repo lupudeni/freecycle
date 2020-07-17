@@ -38,7 +38,7 @@ public class DonationService {
     }
 
 
-    private DonationEntity findEntityById(long id) {
+    public DonationEntity findEntityById(long id) {
         return donationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Donation with id '" + id + "' not found"));
     }
@@ -48,6 +48,7 @@ public class DonationService {
         DonationEntity donationEntity = findEntityById(id);
         return mapper.map(donationEntity, DonationDTO.class);
     }
+
 
     //this is useless
     public List<DonationDTO> getAllOrderedById(SortOrder sortOrder) {

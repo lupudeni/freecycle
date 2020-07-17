@@ -31,7 +31,7 @@ public class DonationDTO {
 
     private UserDTO receiver;
 
-    private List<PictureDTO> pictures;
+    private List<Long> pictureIds;
 
     private Set<UserDTO> userRequests;
 

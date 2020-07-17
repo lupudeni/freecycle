@@ -11,6 +11,8 @@ import java.util.Optional;
 @Repository
 public interface PictureRepository extends JpaRepository<PictureEntity, Long> {
 
+
+
     //delete
     void deleteById(long id);
 }
