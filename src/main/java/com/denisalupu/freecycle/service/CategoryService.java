@@ -8,6 +8,8 @@ import com.denisalupu.freecycle.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class CategoryService {
@@ -19,6 +21,10 @@ public class CategoryService {
         return categoryRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Not a valid category"));
 
+    }
+
+    public List<CategoryDTO> getAllCategories() {
+        return mapper.mapCollectionToList(categoryRepository.findAll(), CategoryDTO.class);
     }
 
 
