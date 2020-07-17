@@ -25,6 +25,8 @@ public class DonationService {
     public static final int MAX_USER_REQUESTS_PER_DONATION = 5;
 
     private final UserService userService;
+    private final CategoryService categoryService;
+    private final AreaOfAvailabilityService areaService;
     private final DonationRepository donationRepository;
     private final Mapper mapper;
 
@@ -63,16 +65,28 @@ public class DonationService {
 
         return mapper.mapCollectionToList(donationEntities, DonationDTO.class);
     }
+//old
+//    public List<DonationDTO> findDonations(CategoryDTO categoryDTO, AreaOfAvailabilityDTO areaDTO, String title) {
+//        List<DonationEntity> donationEntities = donationRepository
+//                .findAllByStatusAndCategoryAndAreaAndTitleContains(Status.AVAILABLE,
+//                        mapper.map(categoryDTO, CategoryEntity.class),
+//                        mapper.map(areaDTO, AreaOfAvailabilityEntity.class), title);
+//
+//        return mapper.mapCollectionToList(donationEntities, DonationDTO.class);
+//
+//    }
 
-    public List<DonationDTO> findDonations(CategoryDTO categoryDTO, AreaOfAvailabilityDTO areaDTO, String title) {
+    public List<DonationDTO> findDonations(long categoryId, long areaId, String title) {
+        CategoryEntity categoryEntity = categoryService.geEntityById(categoryId);
+        AreaOfAvailabilityEntity areaEntity = areaService.getEntityById(areaId);
+
         List<DonationEntity> donationEntities = donationRepository
-                .findAllByStatusAndCategoryAndAreaAndTitleContains(Status.AVAILABLE,
-                        mapper.map(categoryDTO, CategoryEntity.class),
-                        mapper.map(areaDTO, AreaOfAvailabilityEntity.class), title);
+                .findAllByStatusAndCategoryAndAreaAndTitleContains(Status.AVAILABLE, categoryEntity, areaEntity, title);
 
         return mapper.mapCollectionToList(donationEntities, DonationDTO.class);
 
     }
+
 
     @Transactional
     public DonationDTO requestDonation(RequestDTO request) {
@@ -92,7 +106,7 @@ public class DonationService {
         DonationEntity existingDonationEntity = findEntityById(requestDTO.getDonationId());
         Set<UserEntity> userRequest = existingDonationEntity.getUserRequests();
         UserEntity userEntity = userService.findEntityById(requestDTO.getUserId());
-        if(userRequest.contains(userEntity)) {
+        if (userRequest.contains(userEntity)) {
             userRequest.remove(userEntity);
         } else {
             throw new EntityNotFoundException("User has not requested the donation yet");
@@ -111,11 +125,11 @@ public class DonationService {
         existingDonationEntity.setDescription(donationDTO.getDescription());
         existingDonationEntity.setArea(mapper.map(donationDTO.getArea(), AreaOfAvailabilityEntity.class));
         existingDonationEntity.setStatus(donationDTO.getStatus());
-       UserDTO receiver = donationDTO.getReceiver();
-       if (receiver != null) {
-           existingDonationEntity.setReceiver(mapper.map(receiver, UserEntity.class));
-       }
-       Set<UserEntity> userRequests = mapper.mapCollectionToSet(donationDTO.getUserRequests(), UserEntity.class);
+        UserDTO receiver = donationDTO.getReceiver();
+        if (receiver != null) {
+            existingDonationEntity.setReceiver(mapper.map(receiver, UserEntity.class));
+        }
+        Set<UserEntity> userRequests = mapper.mapCollectionToSet(donationDTO.getUserRequests(), UserEntity.class);
         existingDonationEntity.setUserRequests(userRequests);
         return mapper.map(existingDonationEntity, DonationDTO.class);
     }

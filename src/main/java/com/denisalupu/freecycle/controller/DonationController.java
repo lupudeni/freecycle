@@ -18,13 +18,14 @@ import java.util.Set;
 public class DonationController {
     private final DonationService donationService;
 
-    //TODO add status of available from here
+    //tested in postman
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public DonationDTO create(@RequestBody DonationDTO donationDTO) {
+        donationDTO.setStatus(Status.AVAILABLE);
         return donationService.create(donationDTO);
     }
-
+    //tested in postman
     //useless
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -59,7 +60,8 @@ public class DonationController {
      * @param statuses
      * @return
      */
-
+//tested in postman with only one argument
+    //TODO: test in postman with multiple status when having multiple donations
     @GetMapping("/getByStatus")
     @ResponseStatus(HttpStatus.OK)
     public List<DonationDTO> getAllByStatus(@RequestParam("statuses") Status[] statuses) {
@@ -71,35 +73,34 @@ public class DonationController {
      * Method  filters based on the donation objects with the status "AVAILABLE",
      * matching the 3 parameters passed.
      *
-     * @param category
-     * @param area
+     * @param categoryId
+     * @param areaId
      * @param title
      * @return
      */
-
-    //TODO find out how to check this in POSTMAN
+//tested in postman
     @GetMapping("/findDonations")
     @ResponseStatus(HttpStatus.OK)
     public List<DonationDTO> findDonations(
-            @RequestParam("category") CategoryDTO category,
-            @RequestParam("area") AreaOfAvailabilityDTO area,
+            @RequestParam("categoryId") long categoryId,
+            @RequestParam("areaId") long areaId,
             @RequestParam("title") String title) {
 
-        return donationService.findDonations(category, area, title);
+        return donationService.findDonations(categoryId, areaId, title);
     }
-
+//tested in postman
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public DonationDTO updateDonation(@RequestBody DonationDTO donationDTO) {
         return donationService.update(donationDTO);
     }
-
+//tested in postman
     @PutMapping("/request")
     @ResponseStatus(HttpStatus.OK)
     public DonationDTO requestDonation(@RequestBody RequestDTO requestDTO) {
        return donationService.requestDonation(requestDTO);
     }
-
+//tested in POSTMAN
     @PutMapping("/abandonRequest")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void abandonRequest(@RequestBody RequestDTO requestDTO) {
