@@ -2,8 +2,8 @@ package com.denisalupu.freecycle.service;
 
 import com.denisalupu.freecycle.domain.entity.DonationEntity;
 import com.denisalupu.freecycle.domain.entity.PictureEntity;
-import com.denisalupu.freecycle.domain.entity.UserEntity;
 import com.denisalupu.freecycle.exception.EntityNotFoundException;
+import com.denisalupu.freecycle.exception.GeneralServerException;
 import com.denisalupu.freecycle.repository.PictureRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,8 +18,13 @@ public class PictureStorageService {
     private final PictureRepository pictureRepository;
     private final DonationService donationService;
 
-    public void store(MultipartFile file, long donationId) throws IOException {
-        byte[] bytes = file.getBytes();
+    public void store(MultipartFile file, long donationId) {
+        byte[] bytes;
+        try {
+            bytes = file.getBytes();
+        } catch (IOException e) {
+            throw new GeneralServerException("Upload failed");
+        }
         DonationEntity donationEntity = donationService.findEntityById(donationId);
         PictureEntity pictureEntity = PictureEntity.builder()
                 .picture(bytes)
@@ -27,7 +32,6 @@ public class PictureStorageService {
         pictureRepository.save(pictureEntity);
     }
 
-    //TODO delete all find by ids ca deja exista in jpa rep
     public byte[] getBytesById(long id) {
         PictureEntity pictureEntity = pictureRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No picture with id '" + id + "' found"));
         return pictureEntity.getPicture();
