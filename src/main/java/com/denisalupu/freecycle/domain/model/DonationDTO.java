@@ -1,6 +1,6 @@
 package com.denisalupu.freecycle.domain.model;
 
-import com.denisalupu.freecycle.utils.Status;
+import com.denisalupu.freecycle.domain.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,8 +35,8 @@ public class DonationDTO {
 
     private Set<UserDTO> userRequests;
 
-    //timestamp posted
-    //timestamp last edited?
+    //TODO timestamp posted
+    //TODO timestamp last edited?
 
 
 }

@@ -20,12 +20,9 @@ public class CategoryService {
     public CategoryEntity geEntityById(long id) {
         return categoryRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Not a valid category"));
-
     }
 
     public List<CategoryDTO> getAllCategories() {
         return mapper.mapCollectionToList(categoryRepository.findAll(), CategoryDTO.class);
     }
-
-
 }

@@ -1,16 +1,14 @@
 package com.denisalupu.freecycle.controller;
 
-import com.denisalupu.freecycle.domain.model.*;
+import com.denisalupu.freecycle.domain.model.DonationDTO;
+import com.denisalupu.freecycle.domain.model.RequestDTO;
 import com.denisalupu.freecycle.service.DonationService;
-import com.denisalupu.freecycle.utils.SortOrder;
-import com.denisalupu.freecycle.utils.Status;
+import com.denisalupu.freecycle.domain.Status;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("donations")
@@ -18,15 +16,13 @@ import java.util.Set;
 public class DonationController {
     private final DonationService donationService;
 
-    //tested in postman
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public DonationDTO create(@RequestBody DonationDTO donationDTO) {
         donationDTO.setStatus(Status.AVAILABLE);
         return donationService.create(donationDTO);
     }
-    //tested in postman
-    //useless
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public DonationDTO findById(@PathVariable("id") long id) {
@@ -60,7 +56,7 @@ public class DonationController {
      * @param statuses
      * @return
      */
-//tested in postman with only one argument
+
     //TODO: test in postman with multiple status when having multiple donations
     @GetMapping("/getByStatus")
     @ResponseStatus(HttpStatus.OK)
@@ -78,7 +74,6 @@ public class DonationController {
      * @param title
      * @return
      */
-//tested in postman
     @GetMapping("/findDonations")
     @ResponseStatus(HttpStatus.OK)
     public List<DonationDTO> findDonations(
@@ -88,19 +83,19 @@ public class DonationController {
 
         return donationService.findDonations(categoryId, areaId, title);
     }
-//tested in postman
+
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public DonationDTO updateDonation(@RequestBody DonationDTO donationDTO) {
         return donationService.update(donationDTO);
     }
-//tested in postman
+
     @PutMapping("/request")
     @ResponseStatus(HttpStatus.OK)
     public DonationDTO requestDonation(@RequestBody RequestDTO requestDTO) {
        return donationService.requestDonation(requestDTO);
     }
-//tested in POSTMAN
+
     @PutMapping("/abandonRequest")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void abandonRequest(@RequestBody RequestDTO requestDTO) {

@@ -1,6 +1,5 @@
 package com.denisalupu.freecycle.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;

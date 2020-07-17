@@ -1,8 +1,6 @@
 package com.denisalupu.freecycle.exception;
 
-import org.springframework.core.NestedRuntimeException;
-
-public class EntityNotFoundException extends NestedRuntimeException {
+public class EntityNotFoundException extends RuntimeException {
 
     public EntityNotFoundException(String msg) {
         super(msg);

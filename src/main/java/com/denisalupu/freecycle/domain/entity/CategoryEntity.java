@@ -1,14 +1,12 @@
 package com.denisalupu.freecycle.domain.entity;
 
-import com.denisalupu.freecycle.utils.CategoryName;
+import com.denisalupu.freecycle.domain.CategoryName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Set;
 
 @Data
 @Builder
@@ -24,8 +22,4 @@ public class CategoryEntity {
 
     @Enumerated(EnumType.STRING)
     private CategoryName categoryName;
-
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
-//    private List<DonationEntity> donations;
-
 }

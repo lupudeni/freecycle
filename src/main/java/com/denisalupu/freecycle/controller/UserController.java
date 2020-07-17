@@ -2,12 +2,9 @@ package com.denisalupu.freecycle.controller;
 
 import com.denisalupu.freecycle.domain.model.UserDTO;
 import com.denisalupu.freecycle.service.UserService;
-import com.denisalupu.freecycle.utils.SortOrder;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("users")
@@ -30,7 +27,7 @@ public class UserController {
 
     //TODO: update/change password thing
 
-    //TODO: this is not needed
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UserDTO findById(@PathVariable("id") long id) {
@@ -42,19 +39,6 @@ public class UserController {
     public UserDTO findByUserName(@RequestParam("userName") String userName) {
         return userService.findByUserName(userName);
     }
-
-    //TODO:this is not needed
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<UserDTO> getAllOrderedById(@RequestParam("orderedById") SortOrder orderedById) {
-        return userService.getAllOrderedById(orderedById);
-    }
-
-//    @GetMapping
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<UserDTO> getAllOrderedByDonatedObjects(@RequestParam("orderedByDonations") SortOrder orderedByDonations) {
-//        return userService.getAllOrderedByDonatedObjects(orderedByDonations);
-//    }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)

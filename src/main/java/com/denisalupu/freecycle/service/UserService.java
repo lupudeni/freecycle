@@ -5,15 +5,11 @@ import com.denisalupu.freecycle.domain.model.UserDTO;
 import com.denisalupu.freecycle.exception.EntityNotFoundException;
 import com.denisalupu.freecycle.mapper.Mapper;
 import com.denisalupu.freecycle.repository.UserRepository;
-import com.denisalupu.freecycle.utils.SortOrder;
 import lombok.AllArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -37,10 +33,8 @@ public class UserService {
         return updateFields(existingUserEntity, userDTO);
     }
 
-
     //TODO: password should have a special update method,
     // also the password should not be sent back???
-
 
     private UserDTO updateFields(UserEntity existingUserEntity, UserDTO userDTO) {
             existingUserEntity.setFirstName(userDTO.getFirstName());
@@ -68,19 +62,7 @@ public class UserService {
         return mapper.map(userEntity, UserDTO.class);
     }
 
-    public List<UserDTO> getAllOrderedById(SortOrder sortOrder) {
-        List<UserEntity> userEntities;
-        if(sortOrder == SortOrder.ASC) {
-            userEntities = userRepository.findAllByOrderByIdAsc();
-        } else {
-            userEntities = userRepository.findAllByOrderByIdDesc();
-        }
-        return mapper.mapCollectionToList(userEntities, UserDTO.class);
-    }
-
     public void deleteById(long id) {
         userRepository.deleteById(id);
     }
-
-
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class LogInService {
     private final UserService userService;
-
+//todo bi do bi do
     //logIn -> verify if username and password match data base
 //    public boolean logIn(String userName, String password) {
 //       UserDTO userDTO = userService.findByUserName(userName);

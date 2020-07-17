@@ -23,9 +23,6 @@ public class UserDTO {
 
     private String userName;
 
-//    @JsonIgnore
-//    private String password;
-
     private String email;
 
     private String phone;
@@ -38,6 +35,5 @@ public class UserDTO {
 
     @JsonIgnore
     private Set<DonationDTO> donationRequests;
-
 
 }
