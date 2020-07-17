@@ -32,12 +32,6 @@ public class DonationController {
         return donationService.findById(id);
     }
 
-    //useless
-//    @GetMapping
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<DonationDTO> getAllOrderedById(@RequestParam("orderedById") SortOrder orderedById) {
-//        return donationService.getAllOrderedById(orderedById);
-//    }
 
     /**
      * According to the position of the user and the option selected by them in the frontend,
@@ -83,6 +77,7 @@ public class DonationController {
      * @return
      */
 
+    //TODO find out how to check this in POSTMAN
     @GetMapping("/findDonations")
     @ResponseStatus(HttpStatus.OK)
     public List<DonationDTO> findDonations(
@@ -92,15 +87,6 @@ public class DonationController {
 
         return donationService.findDonations(category, area, title);
     }
-
-    /**
-     * The update method functions as a "give donation" and "accept donation" method;
-     * According to the option selected by the user, the frontend puts together the donation object,
-     * with the according status and (in the accept donation case) the according user
-     *
-     * @param donationDTO
-     * @return
-     */
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
@@ -112,6 +98,12 @@ public class DonationController {
     @ResponseStatus(HttpStatus.OK)
     public DonationDTO requestDonation(@RequestBody RequestDTO requestDTO) {
        return donationService.requestDonation(requestDTO);
+    }
+
+    @PutMapping("/abandonRequest")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void abandonRequest(@RequestBody RequestDTO requestDTO) {
+        donationService.abandonRequest(requestDTO);
     }
 
 }

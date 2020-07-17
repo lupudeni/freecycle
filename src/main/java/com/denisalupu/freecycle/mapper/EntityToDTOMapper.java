@@ -5,8 +5,10 @@
 
 package com.denisalupu.freecycle.mapper;
 
+import com.denisalupu.freecycle.domain.entity.AreaOfAvailabilityEntity;
 import com.denisalupu.freecycle.domain.entity.DonationEntity;
 import com.denisalupu.freecycle.domain.entity.UserEntity;
+import com.denisalupu.freecycle.domain.model.AreaOfAvailabilityDTO;
 import com.denisalupu.freecycle.domain.model.DonationDTO;
 import com.denisalupu.freecycle.domain.model.UserDTO;
 import org.modelmapper.ModelMapper;
@@ -22,5 +24,9 @@ public class EntityToDTOMapper {
 
     public UserDTO userMapper(UserEntity source) {
         return modelMapper.map(source, UserDTO.class);
+    }
+
+    public AreaOfAvailabilityDTO areaMapper(AreaOfAvailabilityEntity source) {
+        return modelMapper.map(source, AreaOfAvailabilityDTO.class);
     }
 }

@@ -26,7 +26,7 @@ public class UserEntity {
 
     private String userName;
 
-//    private String password;
+    private String password;
 
     private String email;
 
@@ -34,10 +34,12 @@ public class UserEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "donor")
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<DonationEntity> donatedObjects;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<DonationEntity> receivedObjects;
 
     /**
@@ -47,6 +49,7 @@ public class UserEntity {
 
     @ManyToMany(mappedBy = "userRequests")
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<DonationEntity> requestedDonations;
 
 }
