@@ -73,7 +73,7 @@ public class DonationService {
         if (userRequests.size() >= MAX_USER_REQUESTS_PER_DONATION) {
             throw new BadRequestException("This donation cannot receive any more requests");
         }
-
+//sping mail library
         UserEntity user = userService.findEntityById(request.getUserId());
         userRequests.add(user);
         return mapper.map(existingDonationEntity, DonationDTO.class);
@@ -103,10 +103,10 @@ public class DonationService {
         existingDonationEntity.setDescription(donationDTO.getDescription());
         existingDonationEntity.setArea(mapper.map(donationDTO.getArea(), AreaOfAvailabilityEntity.class));
         existingDonationEntity.setStatus(donationDTO.getStatus());
-        UserDTO receiver = donationDTO.getReceiver();
-        if (receiver != null) {
-            existingDonationEntity.setReceiver(mapper.map(receiver, UserEntity.class));
-        }
+//        UserDTO receiver = donationDTO.getReceiver();
+//        if (receiver != null) {
+//            existingDonationEntity.setReceiver(mapper.map(receiver, UserEntity.class));
+//        }
         Set<UserEntity> userRequests = mapper.mapCollectionToSet(donationDTO.getUserRequests(), UserEntity.class);
         existingDonationEntity.setUserRequests(userRequests);
         return mapper.map(existingDonationEntity, DonationDTO.class);

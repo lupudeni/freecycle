@@ -30,16 +30,17 @@ public class UserEntity {
     private String email;
 
     private String phone;
-
+//change to many to many
+    //add property to donation, given, received/requested
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "donor")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<DonationEntity> donatedObjects;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private List<DonationEntity> receivedObjects;
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
+//    @ToString.Exclude
+//    @EqualsAndHashCode.Exclude
+//    private List<DonationEntity> receivedObjects;
 
     /**
      * Resources and ideas for the Many to Many relationship:
@@ -51,5 +52,9 @@ public class UserEntity {
     @EqualsAndHashCode.Exclude
     private Set<DonationEntity> requestedDonations;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<TransactionEntity> transactions;
 }
 

@@ -26,10 +26,10 @@ public class DonationDTO {
     private AreaOfAvailabilityDTO area;
 
     private Status status;
-
+//take this out maybe, leave just id
     private UserDTO donor;
 
-    private UserDTO receiver;
+//    private UserDTO receiver;
 
     private List<Long> pictureIds;
 

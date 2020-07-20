@@ -30,8 +30,8 @@ public class UserDTO {
     @JsonIgnore
     private List<DonationDTO> donatedObjects;
 
-    @JsonIgnore
-    private List<DonationDTO> receivedObjects;
+//    @JsonIgnore
+//    private List<DonationDTO> receivedObjects;
 
     @JsonIgnore
     private Set<DonationDTO> donationRequests;
