@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -13,7 +14,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
-//TODO: modify to have donation type-> avoid duplication
 
 @Data
 @Builder
@@ -67,6 +67,9 @@ public class DonationEntity {
             joinColumns = @JoinColumn(name = "donation_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<UserEntity> userRequests;
+
+//    @CreatedDate
+//    private LocalDateTime created;
 
 //    @LastModifiedDate
 //    private LocalDateTime lastModified;

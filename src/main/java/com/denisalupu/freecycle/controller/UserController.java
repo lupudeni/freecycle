@@ -34,11 +34,11 @@ public class UserController {
         return userService.findById(id);
     }
 
-    @GetMapping("/")
-    @ResponseStatus(HttpStatus.OK)
-    public UserDTO findByUserName(@RequestParam("userName") String userName) {
-        return userService.findByUserName(userName);
-    }
+//    @GetMapping("/")
+//    @ResponseStatus(HttpStatus.OK)
+//    public UserDTO findByUserName(@RequestParam("userName") String userName) {
+//        return userService.findByUserName(userName);
+//    }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)

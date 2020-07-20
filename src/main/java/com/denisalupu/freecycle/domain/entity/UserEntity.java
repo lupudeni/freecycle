@@ -23,9 +23,11 @@ public class UserEntity {
 
     private String lastName;
 
-    private String userName;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "authentication_id")
+    private AuthenticationEntity authentication;
 
-    private String password;
+//    private String password;
 
     private String email;
 

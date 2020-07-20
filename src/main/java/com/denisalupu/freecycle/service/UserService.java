@@ -39,7 +39,7 @@ public class UserService {
     private UserDTO updateFields(UserEntity existingUserEntity, UserDTO userDTO) {
             existingUserEntity.setFirstName(userDTO.getFirstName());
             existingUserEntity.setLastName(userDTO.getLastName());
-            existingUserEntity.setUserName(userDTO.getUserName());
+//            existingUserEntity.setUserName(userDTO.getUserName());
             existingUserEntity.setEmail(userDTO.getEmail());
             existingUserEntity.setPhone(userDTO.getPhone());
         return mapper.map(existingUserEntity, UserDTO.class);
@@ -55,12 +55,12 @@ public class UserService {
         return mapper.map(userEntity, UserDTO.class);
     }
 
-    public UserDTO findByUserName(String userName) {
-        Optional<UserEntity> userEntityOptional = userRepository.findByUserName(userName);
-        UserEntity userEntity = userEntityOptional.orElseThrow(
-                () -> new EntityNotFoundException("User entity with user name '" + userName + "' not found"));
-        return mapper.map(userEntity, UserDTO.class);
-    }
+//    public UserDTO findByUserName(String userName) {
+//        Optional<UserEntity> userEntityOptional = userRepository.findByUserName(userName);
+//        UserEntity userEntity = userEntityOptional.orElseThrow(
+//                () -> new EntityNotFoundException("User entity with user name '" + userName + "' not found"));
+//        return mapper.map(userEntity, UserDTO.class);
+//    }
 
     public void deleteById(long id) {
         userRepository.deleteById(id);
