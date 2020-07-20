@@ -2,6 +2,7 @@ package com.denisalupu.freecycle.controller;
 
 import com.denisalupu.freecycle.domain.model.DonationDTO;
 import com.denisalupu.freecycle.domain.model.RequestDTO;
+import com.denisalupu.freecycle.domain.model.TransactionDTO;
 import com.denisalupu.freecycle.service.DonationService;
 import com.denisalupu.freecycle.domain.Status;
 import lombok.AllArgsConstructor;
@@ -93,7 +94,7 @@ public class DonationController {
     @PutMapping("/request")
     @ResponseStatus(HttpStatus.OK)
     public DonationDTO requestDonation(@RequestBody RequestDTO requestDTO) {
-       return donationService.requestDonation(requestDTO);
+        return donationService.requestDonation(requestDTO);
     }
 
     @PutMapping("/abandonRequest")
@@ -102,4 +103,19 @@ public class DonationController {
         donationService.abandonRequest(requestDTO);
     }
 
+    @PutMapping("/giveDonation")
+    @ResponseStatus(HttpStatus.OK)
+    public void giveDonation(@RequestParam("receiverId") long receiverId,
+                             @RequestParam("donationId") long donationId) {
+        donationService.giveDonation(receiverId, donationId);
+    }
+
+    @PutMapping("/acceptDonation")
+    @ResponseStatus(HttpStatus.OK)
+    public void acceptDonation(@RequestParam("donorId") long donorId,
+                               @RequestParam("receiverId") long receiverId,
+                               @RequestParam("donationId") long donationId) {
+        //change status to donated
+        //send email to receiver with the phone number of the donor
+    }
 }

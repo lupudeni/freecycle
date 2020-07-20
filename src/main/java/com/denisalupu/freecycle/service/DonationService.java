@@ -1,9 +1,6 @@
 package com.denisalupu.freecycle.service;
 
-import com.denisalupu.freecycle.domain.entity.AreaOfAvailabilityEntity;
-import com.denisalupu.freecycle.domain.entity.CategoryEntity;
-import com.denisalupu.freecycle.domain.entity.DonationEntity;
-import com.denisalupu.freecycle.domain.entity.UserEntity;
+import com.denisalupu.freecycle.domain.entity.*;
 import com.denisalupu.freecycle.domain.model.DonationDTO;
 import com.denisalupu.freecycle.domain.model.RequestDTO;
 import com.denisalupu.freecycle.domain.model.UserDTO;
@@ -110,5 +107,26 @@ public class DonationService {
         Set<UserEntity> userRequests = mapper.mapCollectionToSet(donationDTO.getUserRequests(), UserEntity.class);
         existingDonationEntity.setUserRequests(userRequests);
         return mapper.map(existingDonationEntity, DonationDTO.class);
+    }
+
+    @Transactional
+    public void giveDonation(long receiverId, long donationId) {
+        DonationEntity donationEntity = findEntityById(donationId);
+        donationEntity.setStatus(Status.AWAITING_CONFIRMATION);
+        //TODO send email with option to user
+    }
+
+    @Transactional
+    public void acceptDonation(long donorId, long receiverId, long donationId) {
+        DonationEntity donationEntity = findEntityById(donationId);
+        donationEntity.setStatus(Status.DONATED);
+        UserEntity receiverEntity = userService.findEntityById(receiverId);
+        List<TransactionEntity> transactions = receiverEntity.getTransactions();
+        TransactionEntity transactionEntity = TransactionEntity.builder()
+                .donationId(donationId)
+                .receiver(receiverEntity)
+                .build();
+        transactions.add(transactionEntity);
+        //todo send email to receiver with the phone number of the donor
     }
 }
