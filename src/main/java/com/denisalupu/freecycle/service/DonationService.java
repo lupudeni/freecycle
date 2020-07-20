@@ -70,9 +70,13 @@ public class DonationService {
         if (userRequests.size() >= MAX_USER_REQUESTS_PER_DONATION) {
             throw new BadRequestException("This donation cannot receive any more requests");
         }
-//sping mail library
+//spring mail library
         UserEntity user = userService.findEntityById(request.getUserId());
         userRequests.add(user);
+        if (userRequests.size() == 5) {
+            existingDonationEntity.setStatus(Status.FULLY_REQUESTED);
+            //todo send email to user with the fact that it is fully requested
+        }
         return mapper.map(existingDonationEntity, DonationDTO.class);
     }
 
