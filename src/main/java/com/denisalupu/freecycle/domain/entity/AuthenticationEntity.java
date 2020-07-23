@@ -23,6 +23,6 @@ public class AuthenticationEntity {
 
     private String password;
 
-    @OneToOne(mappedBy = "authentication")
-    private UserEntity user;
+//    @OneToOne(mappedBy = "authentication")
+//    private UserEntity user;
 }

@@ -39,11 +39,6 @@ public class UserEntity {
     @EqualsAndHashCode.Exclude
     private List<DonationEntity> donatedObjects;
 
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
-//    @ToString.Exclude
-//    @EqualsAndHashCode.Exclude
-//    private List<DonationEntity> receivedObjects;
-
     /**
      * Resources and ideas for the Many to Many relationship:
      * https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
