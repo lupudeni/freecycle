@@ -2,13 +2,13 @@ package com.denisalupu.freecycle.domain.model;
 
 import com.denisalupu.freecycle.validation.ValidEmail;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Set;
 
