@@ -6,6 +6,7 @@ import com.denisalupu.freecycle.domain.model.UserDTO;
 import com.denisalupu.freecycle.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,17 +19,18 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/registration")
-    public UserDTO registerUserAccount(@RequestBody @Valid RegistrationDTO registrationDTO) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDTO registerUserAccount(@Valid @RequestBody RegistrationDTO registrationDTO) {
         return userService.registerNewUser(registrationDTO);
     }
 
     //ar trebui de fapt sa fie sign up -> sa aiba o metoda in service
     //care verifica validitatea datelor din userDTO si dupa aia incearca sa faca o authentificare
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO create(@RequestBody UserDTO userDTO) {
-        return userService.create(userDTO);
-    }
+//    @PostMapping
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public UserDTO create(@RequestBody UserDTO userDTO) {
+//        return userService.create(userDTO);
+//    }
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)

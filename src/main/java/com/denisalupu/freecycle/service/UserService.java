@@ -44,11 +44,11 @@ public class UserService {
         return userRepository.findByEmail(email).isEmpty();
     }
 
-    public UserDTO create(UserDTO userDTO) {
-        UserEntity userEntity = mapper.map(userDTO, UserEntity.class);
-        UserEntity savedEntity = userRepository.save(userEntity);
-        return mapper.map(savedEntity, UserDTO.class);
-    }
+//    public UserDTO create(UserDTO userDTO) {
+//        UserEntity userEntity = mapper.map(userDTO, UserEntity.class);
+//        UserEntity savedEntity = userRepository.save(userEntity);
+//        return mapper.map(savedEntity, UserDTO.class);
+//    }
 
     //TODO: create a change password method that updates only the password field
 
