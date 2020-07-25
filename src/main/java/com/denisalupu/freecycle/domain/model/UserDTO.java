@@ -1,6 +1,7 @@
 package com.denisalupu.freecycle.domain.model;
 
 import com.denisalupu.freecycle.validation.ValidEmail;
+import com.denisalupu.freecycle.validation.ValidPhone;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,19 +25,19 @@ public class UserDTO {
 
     private String lastName;
 
-
     @ValidEmail
     @NotNull
     @NotEmpty
     private String email;
 
+    @ValidPhone
+    @NotNull
+    @NotEmpty
     private String phone;
 
     @JsonIgnore
     private List<DonationDTO> donatedObjects;
 
-//    @JsonIgnore
-//    private List<DonationDTO> receivedObjects;
 
     @JsonIgnore
     private Set<DonationDTO> donationRequests;

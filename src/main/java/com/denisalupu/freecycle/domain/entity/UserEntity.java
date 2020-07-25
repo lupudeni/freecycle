@@ -27,13 +27,11 @@ public class UserEntity {
     @JoinColumn(name = "authentication_id")
     private AuthenticationEntity authentication;
 
-//    private String password;
 
     private String email;
 
     private String phone;
-//change to many to many
-    //add property to donation, given, received/requested
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "donor")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
