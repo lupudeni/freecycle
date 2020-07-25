@@ -6,9 +6,11 @@ import com.denisalupu.freecycle.domain.model.DonationDTO;
 import com.denisalupu.freecycle.domain.model.RequestDTO;
 import com.denisalupu.freecycle.exception.BadRequestException;
 import com.denisalupu.freecycle.exception.EntityNotFoundException;
+import com.denisalupu.freecycle.exception.ForbiddenException;
 import com.denisalupu.freecycle.mapper.Mapper;
 import com.denisalupu.freecycle.repository.DonationRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -95,9 +97,12 @@ public class DonationService {
     }
 
     @Transactional
-    public DonationDTO update(DonationDTO donationDTO) {
+    public DonationDTO update(DonationDTO donationDTO, UserDetails loggedInUser) {
         DonationEntity existingDonationEntity = findEntityById(donationDTO.getId());
-        return updateFields(existingDonationEntity, donationDTO);
+        if(checkOwnership(loggedInUser, existingDonationEntity)) {
+            return updateFields(existingDonationEntity, donationDTO);
+        }
+        throw new ForbiddenException("Access denied!");
     }
 
     private DonationDTO updateFields(DonationEntity existingDonationEntity, DonationDTO donationDTO) {
@@ -106,8 +111,8 @@ public class DonationService {
         existingDonationEntity.setDescription(donationDTO.getDescription());
         existingDonationEntity.setArea(mapper.map(donationDTO.getArea(), AreaOfAvailabilityEntity.class));
         existingDonationEntity.setStatus(donationDTO.getStatus());
-        Set<UserEntity> userRequests = mapper.mapCollectionToSet(donationDTO.getUserRequests(), UserEntity.class);
-        existingDonationEntity.setUserRequests(userRequests);
+//        Set<UserEntity> userRequests = mapper.mapCollectionToSet(donationDTO.getUserRequests(), UserEntity.class);
+//        existingDonationEntity.setUserRequests(userRequests);
         return mapper.map(existingDonationEntity, DonationDTO.class);
     }
 
@@ -118,7 +123,6 @@ public class DonationService {
         //TODO send email with option to user
     }
 
-    //TODO add controller
     @Transactional
     public void acceptDonation(long donorId, long receiverId, long donationId) {
         DonationEntity donationEntity = findEntityById(donationId);
@@ -131,5 +135,10 @@ public class DonationService {
                 .build();
         transactions.add(transactionEntity);
         //todo send email to receiver with the phone number of the donor
+    }
+
+    private boolean checkOwnership(UserDetails loggedInUser, DonationEntity existingDonationEntity) {
+        UserEntity loggedEntity = userService.findEntityByUserName(loggedInUser.getUsername());
+        return loggedEntity.equals(existingDonationEntity.getDonor());
     }
 }

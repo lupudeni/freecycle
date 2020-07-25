@@ -3,6 +3,7 @@ package com.denisalupu.freecycle.service;
 import com.denisalupu.freecycle.domain.entity.AuthenticationEntity;
 import com.denisalupu.freecycle.domain.model.AuthenticationDTO;
 import com.denisalupu.freecycle.domain.model.AuthenticationDetails;
+import com.denisalupu.freecycle.exception.EntityNotFoundException;
 import com.denisalupu.freecycle.exception.UnauthorisedException;
 import com.denisalupu.freecycle.mapper.Mapper;
 import com.denisalupu.freecycle.repository.AuthenticationRepository;
@@ -44,6 +45,10 @@ public class AuthenticationService implements UserDetailsService {
 
         AuthenticationDTO authenticationDTO = mapper.map(authenticationEntity, AuthenticationDTO.class);
         return new AuthenticationDetails(authenticationDTO);
+    }
+
+    public AuthenticationEntity findEntityByUserName(String userName) {
+        return authenticationRepository.findByUserName(userName).orElseThrow(() -> new EntityNotFoundException("Incorrect login credentials"));
     }
 
 }

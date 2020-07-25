@@ -6,6 +6,9 @@ import com.denisalupu.freecycle.domain.model.RequestDTO;
 import com.denisalupu.freecycle.service.DonationService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +19,7 @@ import java.util.List;
 public class DonationController {
 
     private final DonationService donationService;
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -86,7 +90,8 @@ public class DonationController {
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public DonationDTO updateDonation(@RequestBody DonationDTO donationDTO) {
-        return donationService.update(donationDTO);
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return donationService.update(donationDTO, userDetails);
     }
 
     @PutMapping("/request")
@@ -96,7 +101,7 @@ public class DonationController {
     }
 
     @PutMapping("/abandonRequest")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     public void abandonRequest(@RequestBody RequestDTO requestDTO) {
         donationService.abandonRequest(requestDTO);
     }
@@ -113,7 +118,7 @@ public class DonationController {
     public void acceptDonation(@RequestParam("donorId") long donorId,
                                @RequestParam("receiverId") long receiverId,
                                @RequestParam("donationId") long donationId) {
-        //change status to donated
-        //send email to receiver with the phone number of the donor
+        donationService.acceptDonation(donorId, receiverId, donationId);
     }
+
 }

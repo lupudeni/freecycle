@@ -67,6 +67,10 @@ public class UserService {
         return mapper.map(userEntity, UserDTO.class);
     }
 
+    public UserEntity findEntityByUserName(String userName) {
+       return userRepository.findByUserName(userName).orElseThrow( () -> new EntityNotFoundException("Incorrect login credentials"));
+    }
+
     public void deleteById(long id) {
         userRepository.deleteById(id);
     }
