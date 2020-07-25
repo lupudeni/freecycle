@@ -1,6 +1,7 @@
 package com.denisalupu.freecycle.domain.model;
 
 import com.denisalupu.freecycle.validation.ValidEmail;
+import com.denisalupu.freecycle.validation.ValidPhone;
 import com.denisalupu.freecycle.validation.ValidUserName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +26,9 @@ public class RegistrationDTO {
     @ValidEmail
     private String email;
 
+    @NotNull
+    @NotEmpty
+    @ValidPhone
     private String phone;
 
     @NotNull
