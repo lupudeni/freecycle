@@ -13,7 +13,9 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class AreaOfAvailabilityService {
+
     private final AreaOfAvailabilityRepository areaRepository;
+
     private final Mapper mapper;
 
     public List<AreaOfAvailabilityDTO> getAllAreas() {

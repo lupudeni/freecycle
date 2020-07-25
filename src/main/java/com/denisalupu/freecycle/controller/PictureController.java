@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @RequestMapping("pictures")
 public class PictureController {
+
     private final PictureStorageService pictureStorageService;
 
     @PostMapping("/")

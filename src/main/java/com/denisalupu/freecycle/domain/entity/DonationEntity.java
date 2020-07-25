@@ -5,12 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -42,14 +38,9 @@ public class DonationEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    //maybe in user there can be a field: donor for and receiver for
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "donor_id")
     private UserEntity donor;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "receiver_id")
-//    private UserEntity receiver;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "donation")
     private List<PictureEntity> pictures;
@@ -58,7 +49,6 @@ public class DonationEntity {
      * Resources and ideas for the Many to Many relationship:
      * https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
      */
-
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
@@ -73,6 +63,5 @@ public class DonationEntity {
 
 //    @LastModifiedDate
 //    private LocalDateTime lastModified;
-
 
 }

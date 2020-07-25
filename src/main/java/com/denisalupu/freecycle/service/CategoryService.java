@@ -15,6 +15,7 @@ import java.util.List;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+
     private final Mapper mapper;
 
     public CategoryEntity geEntityById(long id) {

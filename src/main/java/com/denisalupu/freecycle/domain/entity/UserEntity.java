@@ -27,7 +27,6 @@ public class UserEntity {
     @JoinColumn(name = "authentication_id")
     private AuthenticationEntity authentication;
 
-
     private String email;
 
     private String phone;
@@ -41,7 +40,6 @@ public class UserEntity {
      * Resources and ideas for the Many to Many relationship:
      * https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
      */
-
     @ManyToMany(mappedBy = "userRequests")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

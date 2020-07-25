@@ -1,10 +1,9 @@
 package com.denisalupu.freecycle.controller;
 
+import com.denisalupu.freecycle.domain.Status;
 import com.denisalupu.freecycle.domain.model.DonationDTO;
 import com.denisalupu.freecycle.domain.model.RequestDTO;
-import com.denisalupu.freecycle.domain.model.TransactionDTO;
 import com.denisalupu.freecycle.service.DonationService;
-import com.denisalupu.freecycle.domain.Status;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +14,7 @@ import java.util.List;
 @RequestMapping("donations")
 @AllArgsConstructor
 public class DonationController {
+
     private final DonationService donationService;
 
     @PostMapping
@@ -29,7 +29,6 @@ public class DonationController {
     public DonationDTO findById(@PathVariable("id") long id) {
         return donationService.findById(id);
     }
-
 
     /**
      * According to the position of the user and the option selected by them in the frontend,
@@ -57,7 +56,6 @@ public class DonationController {
      * @param statuses
      * @return
      */
-
     //TODO: test in postman with multiple status when having multiple donations
     @GetMapping("/getByStatus")
     @ResponseStatus(HttpStatus.OK)

@@ -14,8 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.security.auth.message.AuthException;
-
 @Service
 @AllArgsConstructor
 public class AuthenticationService implements UserDetailsService {
@@ -23,6 +21,7 @@ public class AuthenticationService implements UserDetailsService {
     private final AuthenticationRepository authenticationRepository;
 
     private final Mapper mapper;
+
     private final PasswordEncoder passwordEncoder;
 
     public boolean isUserNameUnique(String userName) {
@@ -46,6 +45,5 @@ public class AuthenticationService implements UserDetailsService {
         AuthenticationDTO authenticationDTO = mapper.map(authenticationEntity, AuthenticationDTO.class);
         return new AuthenticationDetails(authenticationDTO);
     }
-
 
 }

@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 /**
  * Mappers created using the implementation of ModelMapper: 'org.modelmapper.extensions:modelmapper-spring:2.3.0'
  * http://modelmapper.org
@@ -20,7 +21,7 @@ public class Mapper {
     }
 
     public <T, R> List<R> mapCollectionToList(Collection<T> source, Class<R> destinationClass) {
-       return source.stream()
+        return source.stream()
                 .map(element -> map(element, destinationClass))
                 .collect(Collectors.toList());
     }

@@ -1,14 +1,13 @@
 package com.denisalupu.freecycle.service;
 
+import com.denisalupu.freecycle.domain.Status;
 import com.denisalupu.freecycle.domain.entity.*;
 import com.denisalupu.freecycle.domain.model.DonationDTO;
 import com.denisalupu.freecycle.domain.model.RequestDTO;
-import com.denisalupu.freecycle.domain.model.UserDTO;
 import com.denisalupu.freecycle.exception.BadRequestException;
 import com.denisalupu.freecycle.exception.EntityNotFoundException;
 import com.denisalupu.freecycle.mapper.Mapper;
 import com.denisalupu.freecycle.repository.DonationRepository;
-import com.denisalupu.freecycle.domain.Status;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,9 +22,13 @@ public class DonationService {
     public static final int MAX_USER_REQUESTS_PER_DONATION = 5;
 
     private final UserService userService;
+
     private final CategoryService categoryService;
+
     private final AreaOfAvailabilityService areaService;
+
     private final DonationRepository donationRepository;
+
     private final Mapper mapper;
 
     @Transactional
@@ -34,7 +37,6 @@ public class DonationService {
         DonationEntity savedDonationEntity = donationRepository.save(donationEntity);
         return mapper.map(savedDonationEntity, DonationDTO.class);
     }
-
 
     public DonationEntity findEntityById(long id) {
         return donationRepository.findById(id)
@@ -104,10 +106,6 @@ public class DonationService {
         existingDonationEntity.setDescription(donationDTO.getDescription());
         existingDonationEntity.setArea(mapper.map(donationDTO.getArea(), AreaOfAvailabilityEntity.class));
         existingDonationEntity.setStatus(donationDTO.getStatus());
-//        UserDTO receiver = donationDTO.getReceiver();
-//        if (receiver != null) {
-//            existingDonationEntity.setReceiver(mapper.map(receiver, UserEntity.class));
-//        }
         Set<UserEntity> userRequests = mapper.mapCollectionToSet(donationDTO.getUserRequests(), UserEntity.class);
         existingDonationEntity.setUserRequests(userRequests);
         return mapper.map(existingDonationEntity, DonationDTO.class);
@@ -120,6 +118,7 @@ public class DonationService {
         //TODO send email with option to user
     }
 
+    //TODO add controller
     @Transactional
     public void acceptDonation(long donorId, long receiverId, long donationId) {
         DonationEntity donationEntity = findEntityById(donationId);

@@ -16,6 +16,7 @@ import java.io.IOException;
 public class PictureStorageService {
 
     private final PictureRepository pictureRepository;
+
     private final DonationService donationService;
 
     public void store(MultipartFile file, long donationId) {
