@@ -67,6 +67,7 @@ public class DonationService {
         return mapper.mapCollectionToList(donationEntities, DonationDTO.class);
     }
 
+    //TODO make sure that owner cannot request its own donation
     @Transactional
     public DonationDTO requestDonation(RequestDTO request) {
         DonationEntity existingDonationEntity = findEntityById(request.getDonationId());
@@ -111,18 +112,20 @@ public class DonationService {
         existingDonationEntity.setDescription(donationDTO.getDescription());
         existingDonationEntity.setArea(mapper.map(donationDTO.getArea(), AreaOfAvailabilityEntity.class));
         existingDonationEntity.setStatus(donationDTO.getStatus());
-//        Set<UserEntity> userRequests = mapper.mapCollectionToSet(donationDTO.getUserRequests(), UserEntity.class);
-//        existingDonationEntity.setUserRequests(userRequests);
         return mapper.map(existingDonationEntity, DonationDTO.class);
     }
 
     @Transactional
-    public void giveDonation(long receiverId, long donationId) {
+    public void giveDonation(long receiverId, long donationId, UserDetails loggedInUser) {
         DonationEntity donationEntity = findEntityById(donationId);
-        donationEntity.setStatus(Status.AWAITING_CONFIRMATION);
-        //TODO send email with option to user
+        if(checkOwnership(loggedInUser, donationEntity)) {
+            donationEntity.setStatus(Status.AWAITING_CONFIRMATION);
+            //todo send email to receiver with the phone number of the donor
+        }
+        throw new ForbiddenException("Access denied!");
     }
 
+    //TODO take this out and integrate donated status in give donation
     @Transactional
     public void acceptDonation(long donorId, long receiverId, long donationId) {
         DonationEntity donationEntity = findEntityById(donationId);

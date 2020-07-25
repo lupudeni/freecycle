@@ -110,7 +110,9 @@ public class DonationController {
     @ResponseStatus(HttpStatus.OK)
     public void giveDonation(@RequestParam("receiverId") long receiverId,
                              @RequestParam("donationId") long donationId) {
-        donationService.giveDonation(receiverId, donationId);
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        donationService.giveDonation(receiverId, donationId, userDetails);
     }
 
     @PutMapping("/acceptDonation")
