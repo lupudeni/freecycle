@@ -1,10 +1,10 @@
-#FreeCycle
+# FreeCycle
 
-####Final project for "The Informal School of IT - JAVA Development"
+#### Final project for "The Informal School of IT - JAVA Development"
 
 FreeCycle is an app that is used for donating objects. The purpose of the app is to centralise and organise the transactions between donor and requester and serves a platform for establishing connection between people.
 
-####Application main flow
+#### Application main flow
 The user can act both as a donor and as a receiver depending on the options they choose.
 
 Users log in and post objects from different categories that they would like to donate to someone else. 
