@@ -68,6 +68,7 @@ public class UserService {
                 () -> new EntityNotFoundException("User entity with id '" + id + "' not found"));
     }
 
+    //useless
     public UserDTO findById(long id) {
         UserEntity userEntity = findEntityById(id);
         return mapper.map(userEntity, UserDTO.class);

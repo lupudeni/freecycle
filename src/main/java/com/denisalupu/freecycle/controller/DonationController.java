@@ -93,14 +93,12 @@ public class DonationController {
         return donationService.update(donationDTO, userDetails);
     }
 
-    //TODO only user != donor
     @PutMapping("/request")
     @ResponseStatus(HttpStatus.OK)
     public DonationDTO requestDonation(@RequestBody RequestDTO requestDTO) {
         return donationService.requestDonation(requestDTO);
     }
 
-    //TODO only user in the "request" set
     @PutMapping("/abandonRequest")
     @ResponseStatus(HttpStatus.OK)
     public void abandonRequest(@RequestBody RequestDTO requestDTO) {

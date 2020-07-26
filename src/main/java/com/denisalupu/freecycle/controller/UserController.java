@@ -41,7 +41,6 @@ public class UserController {
         return userService.findUserByUserName(userName, userDetails);
     }
 
-    //TODO delete cascading
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") long id) {

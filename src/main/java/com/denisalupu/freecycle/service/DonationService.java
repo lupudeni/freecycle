@@ -67,15 +67,16 @@ public class DonationService {
         return mapper.mapCollectionToList(donationEntities, DonationDTO.class);
     }
 
-    //TODO make sure that owner cannot request its own donation
     @Transactional
     public DonationDTO requestDonation(RequestDTO request) {
         DonationEntity existingDonationEntity = findEntityById(request.getDonationId());
+        if(existingDonationEntity.getDonor().getId().equals(request.getUserId())) {
+            throw new BadRequestException("Owners cannot request their own donations");
+        }
         Set<UserEntity> userRequests = existingDonationEntity.getUserRequests();
         if (userRequests.size() >= MAX_USER_REQUESTS_PER_DONATION) {
             throw new BadRequestException("This donation cannot receive any more requests");
         }
-//spring mail library
         UserEntity user = userService.findEntityById(request.getUserId());
         userRequests.add(user);
         if (userRequests.size() == 5) {
@@ -90,17 +91,19 @@ public class DonationService {
         DonationEntity existingDonationEntity = findEntityById(requestDTO.getDonationId());
         Set<UserEntity> userRequest = existingDonationEntity.getUserRequests();
         UserEntity userEntity = userService.findEntityById(requestDTO.getUserId());
-        if (userRequest.contains(userEntity)) {
-            userRequest.remove(userEntity);
-        } else {
+        if (!userRequest.contains(userEntity)) {
             throw new BadRequestException("User has not requested the donation yet");
+        }
+        userRequest.remove(userEntity);
+        if (existingDonationEntity.getStatus() == Status.FULLY_REQUESTED) {
+            existingDonationEntity.setStatus(Status.AVAILABLE);
         }
     }
 
     @Transactional
     public DonationDTO update(DonationDTO donationDTO, UserDetails loggedInUser) {
         DonationEntity existingDonationEntity = findEntityById(donationDTO.getId());
-        if(checkOwnership(loggedInUser, existingDonationEntity)) {
+        if (checkOwnership(loggedInUser, existingDonationEntity)) {
             return updateFields(existingDonationEntity, donationDTO);
         }
         throw new ForbiddenException("Access denied!");
@@ -118,7 +121,7 @@ public class DonationService {
     @Transactional
     public void giveDonation(long receiverId, long donationId, UserDetails loggedInUser) {
         DonationEntity donationEntity = findEntityById(donationId);
-        if(checkOwnership(loggedInUser, donationEntity)) {
+        if (checkOwnership(loggedInUser, donationEntity)) {
             donationEntity.setStatus(Status.DONATED);
             UserEntity receiverEntity = userService.findEntityById(receiverId);
             List<TransactionEntity> transactions = receiverEntity.getTransactions();
@@ -136,4 +139,6 @@ public class DonationService {
         UserEntity loggedEntity = userService.findEntityByUserName(loggedInUser.getUsername());
         return loggedEntity.equals(existingDonationEntity.getDonor());
     }
+
+
 }
