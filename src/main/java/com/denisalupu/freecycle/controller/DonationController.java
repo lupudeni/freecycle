@@ -19,14 +19,15 @@ public class DonationController {
 
     private final DonationService donationService;
 
-
+//TODO add the "donor" in donationDTO based on active logged user
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public DonationDTO create(@RequestBody DonationDTO donationDTO) {
-        donationDTO.setStatus(Status.AVAILABLE);
-        return donationService.create(donationDTO);
+        UserDetails userDetails = AuthenticationUtils.getLoggedInUser();
+        return donationService.create(donationDTO, userDetails);
     }
 
+    //useless
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public DonationDTO findById(@PathVariable("id") long id) {
@@ -112,5 +113,7 @@ public class DonationController {
         UserDetails userDetails = AuthenticationUtils.getLoggedInUser();
         donationService.giveDonation(receiverId, donationId, userDetails);
     }
+
+    //TODO add remove donation
 
 }

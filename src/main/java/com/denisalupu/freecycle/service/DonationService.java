@@ -34,8 +34,11 @@ public class DonationService {
     private final Mapper mapper;
 
     @Transactional
-    public DonationDTO create(DonationDTO donationDTO) {
+    public DonationDTO create(DonationDTO donationDTO, UserDetails loggedInUser) {
+        donationDTO.setStatus(Status.AVAILABLE);
         DonationEntity donationEntity = mapper.map(donationDTO, DonationEntity.class);
+        UserEntity userEntity = userService.findEntityByUserName(loggedInUser.getUsername());
+        donationEntity.setDonor(userEntity);
         DonationEntity savedDonationEntity = donationRepository.save(donationEntity);
         return mapper.map(savedDonationEntity, DonationDTO.class);
     }
