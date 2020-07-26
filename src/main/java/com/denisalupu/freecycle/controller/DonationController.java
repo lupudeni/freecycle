@@ -1,6 +1,5 @@
 package com.denisalupu.freecycle.controller;
 
-import com.denisalupu.freecycle.domain.Status;
 import com.denisalupu.freecycle.domain.model.DonationDTO;
 import com.denisalupu.freecycle.domain.model.RequestDTO;
 import com.denisalupu.freecycle.service.DonationService;
@@ -33,36 +32,6 @@ public class DonationController {
         return donationService.findById(id);
     }
 
-    /**
-     * According to the position of the user and the option selected by them in the frontend,
-     * the application will provide a view of Donation objects with different statuses;
-     * Statuses apply as follows:
-     * frontend option "donate" -> "active donations":
-     * - ACTIVE
-     * - FULLY_REQUESTED
-     * <p>
-     * frontend option "donate" -> "past donations":
-     * - DONATED
-     * <p>
-     * frontend option "request" -> "active requests"
-     * Note that the user has to be in the requests set of the following donations:
-     * - FULLY_REQUESTED
-     * <p>
-     * frontend option "request" -> "past requests"
-     * Note that the user has to be in the requests set of the following donations:
-     * - DONATED
-     *
-     * @param statuses
-     * @return
-     */
-    //useless
-    //TODO: test in postman with multiple status when having multiple donations
-    @GetMapping("/getByStatus")
-    @ResponseStatus(HttpStatus.OK)
-    public List<DonationDTO> getAllByStatus(@RequestParam("statuses") Status[] statuses) {
-        return donationService.findAllByStatus(statuses);
-    }
-
     @GetMapping("/active")
     @ResponseStatus(HttpStatus.OK)
     public List<DonationDTO> getAllActiveDonations() {
@@ -75,6 +44,13 @@ public class DonationController {
     public List<DonationDTO> getAllHistory() {
         UserDetails userDetails = AuthenticationUtils.getLoggedInUser();
         return donationService.getAllHistory(userDetails);
+    }
+
+    @GetMapping("/requested")
+    @ResponseStatus(HttpStatus.OK)
+    public List<DonationDTO> getAllActiveRequests() {
+        UserDetails userDetails = AuthenticationUtils.getLoggedInUser();
+        return donationService.getAllActiveRequests(userDetails);
     }
 
 

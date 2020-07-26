@@ -93,6 +93,18 @@ public class DonationService {
         return mapper.mapCollectionToList(donationEntities, DonationDTO.class);
     }
 
+    /**
+     * Gets all donations requested by the logged in user
+     *
+     * @param loggedInUser currently logged in user
+     * @return List of requested donations
+     */
+    public List<DonationDTO> getAllActiveRequests(UserDetails loggedInUser) {
+        UserEntity userEntity = userService.findEntityByUserName(loggedInUser.getUsername());
+        Set<DonationEntity> donationEntities = userEntity.getRequestedDonations();
+        return mapper.mapCollectionToList(donationEntities, DonationDTO.class);
+    }
+
 
     @Transactional
     public DonationDTO requestDonation(RequestDTO request) {
@@ -157,6 +169,7 @@ public class DonationService {
                     .receiver(receiverEntity)
                     .build();
             transactions.add(transactionEntity);
+            //todo take donation out of all lists from users
             //todo send email to receiver with the phone number of the donor
         }
         throw new ForbiddenException("Access denied!");
