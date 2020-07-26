@@ -19,7 +19,6 @@ public class DonationController {
 
     private final DonationService donationService;
 
-//TODO add the "donor" in donationDTO based on active logged user
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public DonationDTO create(@RequestBody DonationDTO donationDTO) {
@@ -41,8 +40,6 @@ public class DonationController {
      * frontend option "donate" -> "active donations":
      * - ACTIVE
      * - FULLY_REQUESTED
-     * - AWAITING_CONFIRMATION
-     * - IN_PROGRESS
      * <p>
      * frontend option "donate" -> "past donations":
      * - DONATED
@@ -50,8 +47,6 @@ public class DonationController {
      * frontend option "request" -> "active requests"
      * Note that the user has to be in the requests set of the following donations:
      * - FULLY_REQUESTED
-     * - AWAITING_CONFIRMATION
-     * - IN_PROGRESS
      * <p>
      * frontend option "request" -> "past requests"
      * Note that the user has to be in the requests set of the following donations:
