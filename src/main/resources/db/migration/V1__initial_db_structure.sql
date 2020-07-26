@@ -46,9 +46,6 @@ create table donations
 	area_id bigint null,
 	category_id bigint null,
 	donor_id bigint null,
-	receiver_id bigint null,
-	constraint FK_donations_receiver_id_to_users
-		foreign key (receiver_id) references users (id),
 	constraint FK_donations_area_id
 		foreign key (area_id) references areas_of_availability (id),
 	constraint FK_donations_category_id
