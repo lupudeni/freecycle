@@ -15,6 +15,13 @@ The item is then classified as "donated" and will not appear in searches anymore
 Users can edit their own donations, see a list of past donated objects, see a list of active donations (that have not been donated yet) and see a list of donations that they requested.
 When posting a donation, the user is required to specify a category, title, description, area of availability and to load photos.
 
+#### Application requirements
 
+##### DB Schema
+In order for Flyway to be able to create the DB, make sure you have a `freecycle` schema created.
+Note that this app uses MySql 8.
 
-
+##### Email
+In order to use the email sending functionality, provide the following environment variables:
+* `mailUserName` - the gmail SMTP username 
+* `mailPassword` - the app password for the gmail SMTP user (How to obtain an app password: https://support.google.com/mail/answer/185833?hl=en-GB)
