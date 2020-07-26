@@ -55,12 +55,28 @@ public class DonationController {
      * @param statuses
      * @return
      */
+    //useless
     //TODO: test in postman with multiple status when having multiple donations
     @GetMapping("/getByStatus")
     @ResponseStatus(HttpStatus.OK)
     public List<DonationDTO> getAllByStatus(@RequestParam("statuses") Status[] statuses) {
         return donationService.findAllByStatus(statuses);
     }
+
+    /**
+     * Gets all donations with status "AVAILABLE" and "FULLY_REQUESTED" posted by the logged in user
+     * @return List<DonationDTO>
+     */
+    @GetMapping("/active")
+    @ResponseStatus(HttpStatus.OK)
+    public List<DonationDTO> getAllActiveDonations() {
+        UserDetails userDetails = AuthenticationUtils.getLoggedInUser();
+        return donationService.getAllActiveDonations(userDetails);
+    }
+
+
+
+
 
     /**
      * Method used for the frontend option "request" -> "find donations":

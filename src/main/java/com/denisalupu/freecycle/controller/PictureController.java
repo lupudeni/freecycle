@@ -15,7 +15,6 @@ public class PictureController {
 
     private final PictureStorageService pictureStorageService;
 
-
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
     public void upload(@RequestParam("file") MultipartFile file, @RequestParam("donationId") long donationId) {
