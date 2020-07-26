@@ -3,6 +3,8 @@ package com.denisalupu.freecycle.controller;
 import com.denisalupu.freecycle.service.PictureStorageService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,10 +15,12 @@ public class PictureController {
 
     private final PictureStorageService pictureStorageService;
 
+
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
     public void upload(@RequestParam("file") MultipartFile file, @RequestParam("donationId") long donationId) {
-        pictureStorageService.store(file, donationId);
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        pictureStorageService.store(file, donationId, userDetails);
     }
 
     @GetMapping("/{id}")

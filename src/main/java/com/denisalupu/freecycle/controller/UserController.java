@@ -3,8 +3,10 @@ package com.denisalupu.freecycle.controller;
 import com.denisalupu.freecycle.domain.model.RegistrationDTO;
 import com.denisalupu.freecycle.domain.model.UserDTO;
 import com.denisalupu.freecycle.service.UserService;
+import com.denisalupu.freecycle.util.AuthenticationUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,21 +27,26 @@ public class UserController {
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public UserDTO update(@RequestBody UserDTO userDTO) {
-        return userService.update(userDTO);
+        UserDetails userDetails = AuthenticationUtils.getLoggedInUser();
+        return userService.update(userDTO, userDetails);
     }
 
-    //TODO: update/change password thing
+    //TODO check ownership
+    // TODO: update/change password thing
 
-    @GetMapping("/{id}")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO findById(@PathVariable("id") long id) {
-        return userService.findById(id);
+    public UserDTO showUserDetails(@RequestParam ("userName") String userName) {
+        UserDetails userDetails = AuthenticationUtils.getLoggedInUser();
+        return userService.findUserByUserName(userName, userDetails);
     }
 
-    @DeleteMapping
+    //TODO delete cascading
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@RequestParam("id") long id) {
-        userService.deleteById(id);
+    public void delete(@PathVariable("id") long id) {
+        UserDetails userDetails = AuthenticationUtils.getLoggedInUser();
+        userService.deleteById(id, userDetails);
     }
 
 }

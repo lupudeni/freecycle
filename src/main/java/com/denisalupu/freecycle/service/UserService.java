@@ -1,14 +1,17 @@
 package com.denisalupu.freecycle.service;
 
 import com.denisalupu.freecycle.domain.entity.AuthenticationEntity;
+import com.denisalupu.freecycle.domain.entity.DonationEntity;
 import com.denisalupu.freecycle.domain.entity.UserEntity;
 import com.denisalupu.freecycle.domain.model.AuthenticationDTO;
 import com.denisalupu.freecycle.domain.model.RegistrationDTO;
 import com.denisalupu.freecycle.domain.model.UserDTO;
 import com.denisalupu.freecycle.exception.EntityNotFoundException;
+import com.denisalupu.freecycle.exception.ForbiddenException;
 import com.denisalupu.freecycle.mapper.Mapper;
 import com.denisalupu.freecycle.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,10 +46,13 @@ public class UserService {
     //TODO: create a change password method that updates only the password field
 
     @Transactional
-    public UserDTO update(UserDTO userDTO) {
+    public UserDTO update(UserDTO userDTO, UserDetails loggedInUser) {
         UserEntity existingUserEntity = userRepository.findById(userDTO.getId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
-        return updateFields(existingUserEntity, userDTO);
+        if(checkOwnership(loggedInUser, existingUserEntity)) {
+            return updateFields(existingUserEntity, userDTO);
+        }
+        throw  new ForbiddenException("Access denied!");
     }
 
     private UserDTO updateFields(UserEntity existingUserEntity, UserDTO userDTO) {
@@ -71,7 +77,24 @@ public class UserService {
        return userRepository.findByUserName(userName).orElseThrow( () -> new EntityNotFoundException("Incorrect login credentials"));
     }
 
-    public void deleteById(long id) {
+    public UserDTO findUserByUserName(String userName, UserDetails loggedInUser) {
+        UserEntity userEntity = userRepository.findByUserName(userName).orElseThrow( () -> new EntityNotFoundException("Incorrect login credentials"));
+        if(checkOwnership(loggedInUser, userEntity)) {
+            return mapper.map(userEntity, UserDTO.class);
+        }
+        throw new ForbiddenException("Access denied!");
+    }
+
+    public void deleteById(long id, UserDetails loggedInUser) {
+        if(!checkOwnership(loggedInUser, findEntityById(id))) {
+            throw new ForbiddenException("Access denied!");
+        }
         userRepository.deleteById(id);
     }
+
+    public boolean checkOwnership(UserDetails loggedInUser, UserEntity existingUserEntity) {
+        UserEntity loggedEntity = findEntityByUserName(loggedInUser.getUsername());
+        return loggedEntity.equals(existingUserEntity);
+    }
+
 }

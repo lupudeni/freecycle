@@ -23,7 +23,7 @@ public class UserEntity {
 
     private String lastName;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "authentication_id")
     private AuthenticationEntity authentication;
 
@@ -31,7 +31,7 @@ public class UserEntity {
 
     private String phone;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donor")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donor", cascade = CascadeType.REMOVE)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<DonationEntity> donatedObjects;
@@ -40,12 +40,12 @@ public class UserEntity {
      * Resources and ideas for the Many to Many relationship:
      * https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
      */
-    @ManyToMany(mappedBy = "userRequests")
+    @ManyToMany(mappedBy = "userRequests", cascade = CascadeType.REMOVE)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<DonationEntity> requestedDonations;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver", cascade = CascadeType.REMOVE)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<TransactionEntity> transactions;

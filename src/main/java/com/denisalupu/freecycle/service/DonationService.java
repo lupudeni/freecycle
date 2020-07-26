@@ -119,28 +119,20 @@ public class DonationService {
     public void giveDonation(long receiverId, long donationId, UserDetails loggedInUser) {
         DonationEntity donationEntity = findEntityById(donationId);
         if(checkOwnership(loggedInUser, donationEntity)) {
-            donationEntity.setStatus(Status.AWAITING_CONFIRMATION);
+            donationEntity.setStatus(Status.DONATED);
+            UserEntity receiverEntity = userService.findEntityById(receiverId);
+            List<TransactionEntity> transactions = receiverEntity.getTransactions();
+            TransactionEntity transactionEntity = TransactionEntity.builder()
+                    .donationId(donationId)
+                    .receiver(receiverEntity)
+                    .build();
+            transactions.add(transactionEntity);
             //todo send email to receiver with the phone number of the donor
         }
         throw new ForbiddenException("Access denied!");
     }
 
-    //TODO take this out and integrate donated status in give donation
-    @Transactional
-    public void acceptDonation(long donorId, long receiverId, long donationId) {
-        DonationEntity donationEntity = findEntityById(donationId);
-        donationEntity.setStatus(Status.DONATED);
-        UserEntity receiverEntity = userService.findEntityById(receiverId);
-        List<TransactionEntity> transactions = receiverEntity.getTransactions();
-        TransactionEntity transactionEntity = TransactionEntity.builder()
-                .donationId(donationId)
-                .receiver(receiverEntity)
-                .build();
-        transactions.add(transactionEntity);
-        //todo send email to receiver with the phone number of the donor
-    }
-
-    private boolean checkOwnership(UserDetails loggedInUser, DonationEntity existingDonationEntity) {
+    public boolean checkOwnership(UserDetails loggedInUser, DonationEntity existingDonationEntity) {
         UserEntity loggedEntity = userService.findEntityByUserName(loggedInUser.getUsername());
         return loggedEntity.equals(existingDonationEntity.getDonor());
     }

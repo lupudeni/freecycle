@@ -4,10 +4,9 @@ import com.denisalupu.freecycle.domain.Status;
 import com.denisalupu.freecycle.domain.model.DonationDTO;
 import com.denisalupu.freecycle.domain.model.RequestDTO;
 import com.denisalupu.freecycle.service.DonationService;
+import com.denisalupu.freecycle.util.AuthenticationUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -90,16 +89,18 @@ public class DonationController {
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
     public DonationDTO updateDonation(@RequestBody DonationDTO donationDTO) {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = AuthenticationUtils.getLoggedInUser();
         return donationService.update(donationDTO, userDetails);
     }
 
+    //TODO only user != donor
     @PutMapping("/request")
     @ResponseStatus(HttpStatus.OK)
     public DonationDTO requestDonation(@RequestBody RequestDTO requestDTO) {
         return donationService.requestDonation(requestDTO);
     }
 
+    //TODO only user in the "request" set
     @PutMapping("/abandonRequest")
     @ResponseStatus(HttpStatus.OK)
     public void abandonRequest(@RequestBody RequestDTO requestDTO) {
@@ -110,17 +111,8 @@ public class DonationController {
     @ResponseStatus(HttpStatus.OK)
     public void giveDonation(@RequestParam("receiverId") long receiverId,
                              @RequestParam("donationId") long donationId) {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
+        UserDetails userDetails = AuthenticationUtils.getLoggedInUser();
         donationService.giveDonation(receiverId, donationId, userDetails);
-    }
-
-    @PutMapping("/acceptDonation")
-    @ResponseStatus(HttpStatus.OK)
-    public void acceptDonation(@RequestParam("donorId") long donorId,
-                               @RequestParam("receiverId") long receiverId,
-                               @RequestParam("donationId") long donationId) {
-        donationService.acceptDonation(donorId, receiverId, donationId);
     }
 
 }
