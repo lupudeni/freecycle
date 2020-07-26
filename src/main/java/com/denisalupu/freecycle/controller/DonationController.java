@@ -63,10 +63,6 @@ public class DonationController {
         return donationService.findAllByStatus(statuses);
     }
 
-    /**
-     * Gets all donations with status "AVAILABLE" and "FULLY_REQUESTED" posted by the logged in user
-     * @return List<DonationDTO>
-     */
     @GetMapping("/active")
     @ResponseStatus(HttpStatus.OK)
     public List<DonationDTO> getAllActiveDonations() {
@@ -74,8 +70,12 @@ public class DonationController {
         return donationService.getAllActiveDonations(userDetails);
     }
 
-
-
+    @GetMapping("/history")
+    @ResponseStatus(HttpStatus.OK)
+    public List<DonationDTO> getAllHistory() {
+        UserDetails userDetails = AuthenticationUtils.getLoggedInUser();
+        return donationService.getAllHistory(userDetails);
+    }
 
 
     /**
