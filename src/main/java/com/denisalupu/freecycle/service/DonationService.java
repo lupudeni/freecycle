@@ -36,6 +36,8 @@ public class DonationService {
 
     private final MessageService messageService;
 
+    private final TransactionService transactionService;
+
     private final DonationRepository donationRepository;
 
     private final Mapper mapper;
@@ -127,14 +129,19 @@ public class DonationService {
         userRequests.add(requesterEntity);
         if (userRequests.size() == 5) {
             existingDonationEntity.setStatus(Status.FULLY_REQUESTED);
-            String title = existingDonationEntity.getTitle();
-            String donorEmail = existingDonationEntity.getDonor().getEmail();
-            String message = messageService.getMessage("fully.requested.email", List.of(title));
-            emailService.sendEmail(donorEmail, "Your donation is fully requested!", message);
+            sendFullyRequestedEmail(existingDonationEntity);
         }
         return mapper.map(existingDonationEntity, DonationDTO.class);
     }
 
+    public void sendFullyRequestedEmail(DonationEntity existingDonationEntity) {
+        String title = existingDonationEntity.getTitle();
+        String donorEmail = existingDonationEntity.getDonor().getEmail();
+        String message = messageService.getMessage("fully.requested.email", List.of(title));
+        emailService.sendEmail(donorEmail, "Your donation is fully requested!", message);
+    }
+
+    //todo modify to get logged in user instead of requestDTO
     @Transactional
     public void abandonRequest(RequestDTO requestDTO) {
         DonationEntity existingDonationEntity = findEntityById(requestDTO.getDonationId());
@@ -170,19 +177,27 @@ public class DonationService {
     @Transactional
     public void giveDonation(long receiverId, long donationId, UserDetails loggedInUser) {
         DonationEntity donationEntity = findEntityById(donationId);
-        if (checkOwnership(loggedInUser, donationEntity)) {
-            donationEntity.setStatus(Status.DONATED);
-            UserEntity receiverEntity = userService.findEntityById(receiverId);
-            List<TransactionEntity> transactions = receiverEntity.getTransactions();
-            TransactionEntity transactionEntity = TransactionEntity.builder()
-                    .donationId(donationId)
-                    .receiver(receiverEntity)
-                    .build();
-            transactions.add(transactionEntity);
-            //todo take donation out of all lists from users
-            //todo send email to receiver with the phone number of the donor
+        if (!checkOwnership(loggedInUser, donationEntity)) {
+            throw new ForbiddenException("Access denied!");
         }
-        throw new ForbiddenException("Access denied!");
+        if (donationEntity.getStatus() == Status.DONATED) {
+            throw new BadRequestException("Donation no longer available");
+        }
+        donationEntity.setStatus(Status.DONATED);
+        UserEntity receiverEntity = userService.findEntityById(receiverId);
+        transactionService.save(donationId, receiverEntity);
+        //todo take donation out of all lists from users
+
+        sendGiveDonationEmail(loggedInUser, donationEntity, receiverEntity);
+    }
+
+    public void sendGiveDonationEmail(UserDetails loggedInUser, DonationEntity donationEntity, UserEntity receiverEntity) {
+        String receiverEmail = receiverEntity.getEmail();
+        String title = donationEntity.getTitle();
+        UserEntity donorEntity = userService.findEntityByUserName(loggedInUser.getUsername());
+        String phoneNumber = donorEntity.getPhone();
+        String message = messageService.getMessage("give.donation", List.of(title, phoneNumber));
+        emailService.sendEmail(receiverEmail, "You received a donation!", message);
     }
 
     public boolean checkOwnership(UserDetails loggedInUser, DonationEntity existingDonationEntity) {
