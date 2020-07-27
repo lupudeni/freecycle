@@ -3,21 +3,17 @@ package com.denisalupu.freecycle.service;
 import com.denisalupu.freecycle.domain.Status;
 import com.denisalupu.freecycle.domain.entity.*;
 import com.denisalupu.freecycle.domain.model.DonationDTO;
-import com.denisalupu.freecycle.domain.model.RequestDTO;
-import com.denisalupu.freecycle.domain.model.UserDTO;
 import com.denisalupu.freecycle.exception.BadRequestException;
 import com.denisalupu.freecycle.exception.EntityNotFoundException;
 import com.denisalupu.freecycle.exception.ForbiddenException;
 import com.denisalupu.freecycle.mapper.Mapper;
 import com.denisalupu.freecycle.repository.DonationRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.context.MessageSource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 @Service
@@ -108,7 +104,7 @@ public class DonationService {
      * @param loggedInUser currently logged in user
      * @return List of requested donations
      */
-    public List<DonationDTO> getAllActiveRequests(UserDetails loggedInUser) {
+    public List<DonationDTO> getAllRequests(UserDetails loggedInUser) {
         UserEntity userEntity = userService.findEntityByUserName(loggedInUser.getUsername());
         Set<DonationEntity> donationEntities = userEntity.getRequestedDonations();
         return mapper.mapCollectionToList(donationEntities, DonationDTO.class);
@@ -141,12 +137,11 @@ public class DonationService {
         emailService.sendEmail(donorEmail, "Your donation is fully requested!", message);
     }
 
-    //todo modify to get logged in user instead of requestDTO
     @Transactional
-    public void abandonRequest(RequestDTO requestDTO) {
-        DonationEntity existingDonationEntity = findEntityById(requestDTO.getDonationId());
+    public void abandonRequest(long donationId, UserDetails loggedInUser) {
+        DonationEntity existingDonationEntity = findEntityById(donationId);
         Set<UserEntity> userRequest = existingDonationEntity.getUserRequests();
-        UserEntity userEntity = userService.findEntityById(requestDTO.getUserId());
+        UserEntity userEntity = userService.findEntityByUserName(loggedInUser.getUsername());
         if (!userRequest.contains(userEntity)) {
             throw new BadRequestException("User has not requested the donation yet");
         }
@@ -186,7 +181,6 @@ public class DonationService {
         donationEntity.setStatus(Status.DONATED);
         UserEntity receiverEntity = userService.findEntityById(receiverId);
         transactionService.save(donationId, receiverEntity);
-        //todo take donation out of all lists from users
 
         sendGiveDonationEmail(loggedInUser, donationEntity, receiverEntity);
     }

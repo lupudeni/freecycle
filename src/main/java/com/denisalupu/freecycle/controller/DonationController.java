@@ -1,7 +1,6 @@
 package com.denisalupu.freecycle.controller;
 
 import com.denisalupu.freecycle.domain.model.DonationDTO;
-import com.denisalupu.freecycle.domain.model.RequestDTO;
 import com.denisalupu.freecycle.service.DonationService;
 import com.denisalupu.freecycle.util.AuthenticationUtils;
 import lombok.AllArgsConstructor;
@@ -50,7 +49,7 @@ public class DonationController {
     @ResponseStatus(HttpStatus.OK)
     public List<DonationDTO> getAllActiveRequests() {
         UserDetails userDetails = AuthenticationUtils.getLoggedInUser();
-        return donationService.getAllActiveRequests(userDetails);
+        return donationService.getAllRequests(userDetails);
     }
 
 
@@ -81,7 +80,6 @@ public class DonationController {
         return donationService.update(donationDTO, userDetails);
     }
 
-
     @PutMapping("/request/{donationId}")
     @ResponseStatus(HttpStatus.OK)
     public DonationDTO requestDonation(@PathVariable ("donationId") long donationId){
@@ -89,16 +87,11 @@ public class DonationController {
         return donationService.requestDonation(donationId, userDetails);
     }
 
-//    @PutMapping("/request")
-//    @ResponseStatus(HttpStatus.OK)
-//    public DonationDTO requestDonation(@RequestBody RequestDTO requestDTO) {
-//        return donationService.requestDonation(requestDTO);
-//    }
-
-    @PutMapping("/abandonRequest")
+    @PutMapping("/abandonRequest/{donationId}")
     @ResponseStatus(HttpStatus.OK)
-    public void abandonRequest(@RequestBody RequestDTO requestDTO) {
-        donationService.abandonRequest(requestDTO);
+    public void abandonRequest(@PathVariable ("donationId") long donationId) {
+        UserDetails userDetails = AuthenticationUtils.getLoggedInUser();
+        donationService.abandonRequest(donationId, userDetails);
     }
 
     @PutMapping("/giveDonation")
