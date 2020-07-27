@@ -4,6 +4,7 @@ import com.denisalupu.freecycle.domain.Status;
 import com.denisalupu.freecycle.domain.entity.*;
 import com.denisalupu.freecycle.domain.model.DonationDTO;
 import com.denisalupu.freecycle.domain.model.RequestDTO;
+import com.denisalupu.freecycle.domain.model.UserDTO;
 import com.denisalupu.freecycle.exception.BadRequestException;
 import com.denisalupu.freecycle.exception.EntityNotFoundException;
 import com.denisalupu.freecycle.exception.ForbiddenException;
@@ -113,17 +114,17 @@ public class DonationService {
 
 
     @Transactional
-    public DonationDTO requestDonation(RequestDTO request) {
-        DonationEntity existingDonationEntity = findEntityById(request.getDonationId());
-        if (existingDonationEntity.getDonor().getId().equals(request.getUserId())) {
+    public DonationDTO requestDonation(long donationId, UserDetails loggedInUser) {
+        DonationEntity existingDonationEntity = findEntityById(donationId);
+        UserEntity requesterEntity = userService.findEntityByUserName(loggedInUser.getUsername());
+        if (existingDonationEntity.getDonor().getId().equals(requesterEntity.getId())) {
             throw new BadRequestException("Owners cannot request their own donations");
         }
         Set<UserEntity> userRequests = existingDonationEntity.getUserRequests();
         if (userRequests.size() >= MAX_USER_REQUESTS_PER_DONATION) {
             throw new BadRequestException("This donation cannot receive any more requests");
         }
-        UserEntity user = userService.findEntityById(request.getUserId());
-        userRequests.add(user);
+        userRequests.add(requesterEntity);
         if (userRequests.size() == 5) {
             existingDonationEntity.setStatus(Status.FULLY_REQUESTED);
             String title = existingDonationEntity.getTitle();

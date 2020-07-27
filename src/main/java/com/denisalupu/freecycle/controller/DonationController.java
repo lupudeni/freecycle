@@ -81,11 +81,19 @@ public class DonationController {
         return donationService.update(donationDTO, userDetails);
     }
 
-    @PutMapping("/request")
+
+    @PutMapping("/request/{donationId}")
     @ResponseStatus(HttpStatus.OK)
-    public DonationDTO requestDonation(@RequestBody RequestDTO requestDTO) {
-        return donationService.requestDonation(requestDTO);
+    public DonationDTO requestDonation(@PathVariable ("donationId") long donationId){
+        UserDetails userDetails = AuthenticationUtils.getLoggedInUser();
+        return donationService.requestDonation(donationId, userDetails);
     }
+
+//    @PutMapping("/request")
+//    @ResponseStatus(HttpStatus.OK)
+//    public DonationDTO requestDonation(@RequestBody RequestDTO requestDTO) {
+//        return donationService.requestDonation(requestDTO);
+//    }
 
     @PutMapping("/abandonRequest")
     @ResponseStatus(HttpStatus.OK)
