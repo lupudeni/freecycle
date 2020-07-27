@@ -10,11 +10,13 @@ import com.denisalupu.freecycle.exception.ForbiddenException;
 import com.denisalupu.freecycle.mapper.Mapper;
 import com.denisalupu.freecycle.repository.DonationRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 @Service
@@ -28,6 +30,10 @@ public class DonationService {
     private final CategoryService categoryService;
 
     private final AreaOfAvailabilityService areaService;
+
+    private final EmailService emailService;
+
+    private final MessageService messageService;
 
     private final DonationRepository donationRepository;
 
@@ -120,7 +126,10 @@ public class DonationService {
         userRequests.add(user);
         if (userRequests.size() == 5) {
             existingDonationEntity.setStatus(Status.FULLY_REQUESTED);
-            //todo send email to user with the fact that it is fully requested
+            String title = existingDonationEntity.getTitle();
+            String donorEmail = existingDonationEntity.getDonor().getEmail();
+            String message = messageService.getMessage("fully.requested.email", List.of(title));
+            emailService.sendEmail(donorEmail, "Your donation is fully requested!", message);
         }
         return mapper.map(existingDonationEntity, DonationDTO.class);
     }

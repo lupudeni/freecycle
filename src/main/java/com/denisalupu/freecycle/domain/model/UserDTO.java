@@ -3,10 +3,7 @@ package com.denisalupu.freecycle.domain.model;
 import com.denisalupu.freecycle.validation.ValidEmail;
 import com.denisalupu.freecycle.validation.ValidPhone;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -36,10 +33,14 @@ public class UserDTO {
     private String phone;
 
     @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<DonationDTO> donatedObjects;
 
 
     @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<DonationDTO> donationRequests;
 
 }

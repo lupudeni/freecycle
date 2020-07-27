@@ -23,5 +23,6 @@ public class AreaOfAvailabilityEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "area")
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<DonationEntity> donations;
 }

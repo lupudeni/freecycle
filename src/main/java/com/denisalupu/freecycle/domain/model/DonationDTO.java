@@ -1,10 +1,7 @@
 package com.denisalupu.freecycle.domain.model;
 
 import com.denisalupu.freecycle.domain.Status;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 import java.util.Set;
@@ -26,17 +23,18 @@ public class DonationDTO {
     private AreaOfAvailabilityDTO area;
 
     private Status status;
-//take this out maybe, leave just id
+
     private UserDTO donor;
 
-//    private UserDTO receiver;
-
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<Long> pictureIds;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<UserDTO> userRequests;
 
     //TODO timestamp posted
-    //TODO timestamp last edited?
 
 
 }
