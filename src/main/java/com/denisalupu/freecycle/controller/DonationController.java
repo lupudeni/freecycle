@@ -24,13 +24,6 @@ public class DonationController {
         return donationService.create(donationDTO, userDetails);
     }
 
-    //useless
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public DonationDTO findById(@PathVariable("id") long id) {
-        return donationService.findById(id);
-    }
-
     @GetMapping("/active")
     @ResponseStatus(HttpStatus.OK)
     public List<DonationDTO> getAllActiveDonations() {
@@ -51,7 +44,6 @@ public class DonationController {
         UserDetails userDetails = AuthenticationUtils.getLoggedInUser();
         return donationService.getAllRequests(userDetails);
     }
-
 
     /**
      * Method used for the frontend option "request" -> "find donations":

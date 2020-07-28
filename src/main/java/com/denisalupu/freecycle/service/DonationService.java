@@ -53,17 +53,6 @@ public class DonationService {
                 .orElseThrow(() -> new EntityNotFoundException("Donation with id '" + id + "' not found"));
     }
 
-    //this is useless
-    public DonationDTO findById(long id) {
-        DonationEntity donationEntity = findEntityById(id);
-        return mapper.map(donationEntity, DonationDTO.class);
-    }
-
-    public List<DonationDTO> findAllByStatus(Status[] statuses) {
-        List<DonationEntity> donationEntities = donationRepository.findAllByStatusIn(List.of(statuses));
-        return mapper.mapCollectionToList(donationEntities, DonationDTO.class);
-    }
-
     public List<DonationDTO> findDonations(long categoryId, long areaId, String title) {
         CategoryEntity categoryEntity = categoryService.geEntityById(categoryId);
         AreaOfAvailabilityEntity areaEntity = areaService.getEntityById(areaId);
