@@ -57,21 +57,24 @@ class DonationServiceTest {
 
     private DonationEntity donationEntity;
 
-    private DonationEntity fullyRequestedDonationEntity;
-
     private UserEntity userEntity;
 
     private DonationDTO donationDTO;
 
     private UserDTO userDTO;
 
+    private CategoryEntity categoryEntity;
+
+    private AreaOfAvailabilityEntity areaEntity;
+
     @BeforeEach
     void setUp() {
-        donationEntity = donationTestUtil.getBasicDonationEntity();
-        fullyRequestedDonationEntity = donationTestUtil.getFullyRequestedDonationEntity();
+        donationEntity = donationTestUtil.getDonationEntity();
         donationDTO = donationTestUtil.getDonationDTO();
         userDTO = donationTestUtil.getUserDTO();
         userEntity = donationTestUtil.getUserEntity();
+        categoryEntity = donationTestUtil.getCategoryEntity();
+        areaEntity = donationTestUtil.getAreaOfAvailabilityEntity();
     }
 
     @Test
@@ -343,12 +346,42 @@ class DonationServiceTest {
         when(userService.findEntityByUserName(loggedInUserMock.getUsername()))
                 .thenReturn(requesterEntity);
 
-        DonationEntity existingDonationEntity = fullyRequestedDonationEntity;
+        Set<UserEntity> userRequests = donationEntity.getUserRequests();
+        donationTestUtil.add5UserRequests(userRequests);
         when(donationRepository.findById(donationId))
-                .thenReturn(Optional.of(existingDonationEntity));
+                .thenReturn(Optional.of(donationEntity));
 
         //then
         assertThrows(BadRequestException.class, () -> sut.requestDonation(donationId, loggedInUserMock));
+    }
+
+    @Test
+    void given_4_requests_when_requestDonation_then_change_status_and_send_email() {
+        //given
+        long donationId = 1L;
+        UserDetails loggedInUserMock = mock(UserDetails.class);
+        UserEntity requesterEntity = UserEntity.builder().id(2L).build();
+        when(userService.findEntityByUserName(loggedInUserMock.getUsername()))
+                .thenReturn(requesterEntity);
+
+        Set<UserEntity> userRequests = donationEntity.getUserRequests();
+        donationTestUtil.add4UserRequests(userRequests);
+
+        donationEntity.setUserRequests(userRequests);
+        when(donationRepository.findById(donationId))
+                .thenReturn(Optional.of(donationEntity));
+
+        donationDTO.setStatus(Status.FULLY_REQUESTED);
+        when(mapper.map(donationEntity, DonationDTO.class))
+                .thenReturn(donationDTO);
+        //when
+        DonationDTO actualDonation = sut.requestDonation(donationId, loggedInUserMock);
+
+        //then
+        assertThat(actualDonation).isSameAs(donationDTO);
+        assertThat(actualDonation.getStatus()).isEqualTo(Status.FULLY_REQUESTED);
+        verify(emailService).sendEmail(donationEntity.getDonor().getEmail(), "Your donation is fully requested!", null);
+
     }
 
     @Test
@@ -472,5 +505,46 @@ class DonationServiceTest {
         assertThrows(BadRequestException.class, () -> sut.giveDonation(receiverId, donationId, loggedInUserMock));
     }
 
+    @Test
+    void given_donationDTO_and_user_details_when_update_then_return_updated_dto() {
+        //given
+        UserDetails loggedInUserMock = mock(UserDetails.class);
+        when(userService.findEntityByUserName(loggedInUserMock.getUsername()))
+                .thenReturn(userEntity);
 
+        DonationDTO donationDTOMock = mock(DonationDTO.class);
+
+        when(donationRepository.findById(donationDTOMock.getId()))
+                .thenReturn(Optional.of(donationEntity));
+
+        when(mapper.map(donationDTOMock.getCategory(), CategoryEntity.class))
+                .thenReturn(categoryEntity);
+        when(mapper.map(donationDTOMock.getArea(), AreaOfAvailabilityEntity.class))
+                .thenReturn(areaEntity);
+
+        when(mapper.map(donationEntity, DonationDTO.class))
+                .thenReturn(donationDTO);
+
+        //when
+        DonationDTO actualDonationDTO = sut.update(donationDTOMock, loggedInUserMock);
+
+        //then
+        assertThat(actualDonationDTO).isSameAs(donationDTO);
+    }
+
+    @Test
+    void given_donationDTO_and_wrong_credentials_when_update_then_throw_exception() {
+        UserDetails loggedInUserMock = mock(UserDetails.class);
+        UserEntity userEntityMock = mock(UserEntity.class);
+        when(userService.findEntityByUserName(loggedInUserMock.getUsername()))
+                .thenReturn(userEntityMock);
+        DonationDTO donationDTOMock = mock(DonationDTO.class);
+
+        when(donationRepository.findById(donationDTOMock.getId()))
+                .thenReturn(Optional.of(donationEntity));
+
+        //then
+        assertThrows(ForbiddenException.class, () -> sut.update(donationDTOMock, loggedInUserMock));
+
+    }
 }

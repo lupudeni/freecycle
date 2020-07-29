@@ -14,9 +14,11 @@ import com.denisalupu.freecycle.domain.model.UserDTO;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.mockito.Mockito.mock;
+
 public class DonationTestUtil {
 
-    public DonationEntity getBasicDonationEntity() {
+    public DonationEntity getDonationEntity() {
         AreaOfAvailabilityEntity areaEntity = getAreaOfAvailabilityEntity();
 
         CategoryEntity categoryEntity = getCategoryEntity();
@@ -29,43 +31,27 @@ public class DonationTestUtil {
                 .area(areaEntity)
                 .category(categoryEntity)
                 .donor(getUserEntity())
-                .userRequests(new HashSet<UserEntity>())
+                .userRequests(new HashSet<>())
                 .build();
     }
 
 
-    public DonationEntity getFullyRequestedDonationEntity() {
-        AreaOfAvailabilityEntity areaEntity = getAreaOfAvailabilityEntity();
-        CategoryEntity categoryEntity = getCategoryEntity();
+    public void add4UserRequests(Set<UserEntity> userRequests) {
+        UserEntity user1Mock = mock(UserEntity.class);
+        UserEntity user2Mock = mock(UserEntity.class);
+        UserEntity user3Mock = mock(UserEntity.class);
+        UserEntity user4Mock = mock(UserEntity.class);
+        userRequests.add(user1Mock);
+        userRequests.add(user2Mock);
+        userRequests.add(user3Mock);
+        userRequests.add(user4Mock);
+    }
 
-        UserEntity userEntity3 = UserEntity.builder()
-                .id(3L)
-                .build();
-        UserEntity userEntity4 = UserEntity.builder()
-                .id(4L)
-                .build();
-        UserEntity userEntity5 = UserEntity.builder()
-                .id(5L)
-                .build();
-        UserEntity userEntity6 = UserEntity.builder()
-                .id(6L)
-                .build();
-        UserEntity userEntity7 = UserEntity.builder()
-                .id(7L)
-                .build();
+    public void add5UserRequests(Set<UserEntity> userRequests) {
+        add4UserRequests(userRequests);
+        UserEntity user5Mock = mock(UserEntity.class);
+        userRequests.add(user5Mock);
 
-        Set<UserEntity> requests = Set.of(userEntity3, userEntity4, userEntity5, userEntity6, userEntity7);
-
-        return DonationEntity.builder()
-                .id(1L)
-                .description("2015")
-                .status(Status.FULLY_REQUESTED)
-                .title("Fallout 4")
-                .area(areaEntity)
-                .category(categoryEntity)
-                .donor(getUserEntity())
-                .userRequests(requests)
-                .build();
     }
 
 
