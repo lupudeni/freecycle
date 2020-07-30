@@ -1,7 +1,6 @@
 package com.denisalupu.freecycle.service;
 
 import com.denisalupu.freecycle.domain.entity.AuthenticationEntity;
-import com.denisalupu.freecycle.domain.entity.DonationEntity;
 import com.denisalupu.freecycle.domain.entity.UserEntity;
 import com.denisalupu.freecycle.domain.model.AuthenticationDTO;
 import com.denisalupu.freecycle.domain.model.RegistrationDTO;
@@ -66,12 +65,6 @@ public class UserService {
     public UserEntity findEntityById(long id) {
         return userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("User entity with id '" + id + "' not found"));
-    }
-
-    //useless
-    public UserDTO findById(long id) {
-        UserEntity userEntity = findEntityById(id);
-        return mapper.map(userEntity, UserDTO.class);
     }
 
     public UserEntity findEntityByUserName(String userName) {
