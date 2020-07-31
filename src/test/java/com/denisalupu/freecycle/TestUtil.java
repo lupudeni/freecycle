@@ -1,4 +1,4 @@
-package com.denisalupu.freecycle.service;
+package com.denisalupu.freecycle;
 
 import com.denisalupu.freecycle.domain.CategoryName;
 import com.denisalupu.freecycle.domain.Status;
@@ -16,7 +16,7 @@ import java.util.Set;
 
 import static org.mockito.Mockito.mock;
 
-public class DonationTestUtil {
+public class TestUtil {
 
     public DonationEntity getDonationEntity() {
         AreaOfAvailabilityEntity areaEntity = getAreaOfAvailabilityEntity();

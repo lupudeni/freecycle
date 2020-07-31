@@ -1,5 +1,6 @@
 package com.denisalupu.freecycle.service;
 
+import com.denisalupu.freecycle.TestUtil;
 import com.denisalupu.freecycle.domain.Status;
 import com.denisalupu.freecycle.domain.entity.*;
 import com.denisalupu.freecycle.domain.model.DonationDTO;
@@ -53,7 +54,7 @@ class DonationServiceTest {
     @InjectMocks
     private DonationService sut;
 
-    private final DonationTestUtil donationTestUtil = new DonationTestUtil();
+    private final TestUtil testUtil = new TestUtil();
 
     private DonationEntity donationEntity;
 
@@ -69,12 +70,12 @@ class DonationServiceTest {
 
     @BeforeEach
     void setUp() {
-        donationEntity = donationTestUtil.getDonationEntity();
-        donationDTO = donationTestUtil.getDonationDTO();
-        userDTO = donationTestUtil.getUserDTO();
-        userEntity = donationTestUtil.getUserEntity();
-        categoryEntity = donationTestUtil.getCategoryEntity();
-        areaEntity = donationTestUtil.getAreaOfAvailabilityEntity();
+        donationEntity = testUtil.getDonationEntity();
+        donationDTO = testUtil.getDonationDTO();
+        userDTO = testUtil.getUserDTO();
+        userEntity = testUtil.getUserEntity();
+        categoryEntity = testUtil.getCategoryEntity();
+        areaEntity = testUtil.getAreaOfAvailabilityEntity();
     }
 
     @Test
@@ -347,7 +348,7 @@ class DonationServiceTest {
                 .thenReturn(requesterEntity);
 
         Set<UserEntity> userRequests = donationEntity.getUserRequests();
-        donationTestUtil.add5UserRequests(userRequests);
+        testUtil.add5UserRequests(userRequests);
         when(donationRepository.findById(donationId))
                 .thenReturn(Optional.of(donationEntity));
 
@@ -365,7 +366,7 @@ class DonationServiceTest {
                 .thenReturn(requesterEntity);
 
         Set<UserEntity> userRequests = donationEntity.getUserRequests();
-        donationTestUtil.add4UserRequests(userRequests);
+        testUtil.add4UserRequests(userRequests);
 
         donationEntity.setUserRequests(userRequests);
         when(donationRepository.findById(donationId))

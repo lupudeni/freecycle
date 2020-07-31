@@ -1,5 +1,6 @@
 package com.denisalupu.freecycle.service;
 
+import com.denisalupu.freecycle.TestUtil;
 import com.denisalupu.freecycle.domain.entity.AuthenticationEntity;
 import com.denisalupu.freecycle.domain.entity.UserEntity;
 import com.denisalupu.freecycle.domain.model.RegistrationDTO;
@@ -37,7 +38,7 @@ class UserServiceTest {
     @InjectMocks
     private UserService sut;
 
-    private final UserServiceTestUtil userServiceTestUtil = new UserServiceTestUtil();
+    private final TestUtil testUtil = new TestUtil();
 
 
     private UserDTO userDTO;
@@ -46,8 +47,8 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        userDTO = userServiceTestUtil.getUserDTO();
-        userEntity = userServiceTestUtil.getUserEntity();
+        userDTO = testUtil.getUserDTO();
+        userEntity = testUtil.getUserEntity();
     }
 
     @Test
