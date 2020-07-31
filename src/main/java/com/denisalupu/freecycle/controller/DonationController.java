@@ -3,6 +3,7 @@ package com.denisalupu.freecycle.controller;
 import com.denisalupu.freecycle.domain.model.DonationDTO;
 import com.denisalupu.freecycle.service.DonationService;
 import com.denisalupu.freecycle.util.AuthenticationUtils;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("donations")
+@SecurityRequirement(name = "http_basic")
 @AllArgsConstructor
 public class DonationController {
 

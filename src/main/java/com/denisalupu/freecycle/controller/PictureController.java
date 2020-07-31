@@ -1,6 +1,7 @@
 package com.denisalupu.freecycle.controller;
 
 import com.denisalupu.freecycle.service.PictureStorageService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,8 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@AllArgsConstructor
 @RequestMapping("pictures")
+@SecurityRequirement(name = "http_basic")
+@AllArgsConstructor
 public class PictureController {
 
     private final PictureStorageService pictureStorageService;

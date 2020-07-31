@@ -4,6 +4,7 @@ import com.denisalupu.freecycle.domain.model.RegistrationDTO;
 import com.denisalupu.freecycle.domain.model.UserDTO;
 import com.denisalupu.freecycle.service.UserService;
 import com.denisalupu.freecycle.util.AuthenticationUtils;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +14,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("users")
+@SecurityRequirement(name = "http_basic")
 @AllArgsConstructor
 public class UserController {
 
