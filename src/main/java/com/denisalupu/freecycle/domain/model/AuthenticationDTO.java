@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class AuthenticationDTO {
 
-    private String id;
+    private long id;
 
     @NotNull
     @NotEmpty

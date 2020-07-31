@@ -47,8 +47,4 @@ public class AuthenticationService implements UserDetailsService {
         return new AuthenticationDetails(authenticationDTO);
     }
 
-    public AuthenticationEntity findEntityByUserName(String userName) {
-        return authenticationRepository.findByUserName(userName).orElseThrow(() -> new EntityNotFoundException("Incorrect login credentials"));
-    }
-
 }

@@ -2,14 +2,8 @@ package com.denisalupu.freecycle;
 
 import com.denisalupu.freecycle.domain.CategoryName;
 import com.denisalupu.freecycle.domain.Status;
-import com.denisalupu.freecycle.domain.entity.AreaOfAvailabilityEntity;
-import com.denisalupu.freecycle.domain.entity.CategoryEntity;
-import com.denisalupu.freecycle.domain.entity.DonationEntity;
-import com.denisalupu.freecycle.domain.entity.UserEntity;
-import com.denisalupu.freecycle.domain.model.AreaOfAvailabilityDTO;
-import com.denisalupu.freecycle.domain.model.CategoryDTO;
-import com.denisalupu.freecycle.domain.model.DonationDTO;
-import com.denisalupu.freecycle.domain.model.UserDTO;
+import com.denisalupu.freecycle.domain.entity.*;
+import com.denisalupu.freecycle.domain.model.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -114,6 +108,22 @@ public class TestUtil {
                 .lastName("Doe")
                 .phone("0740598119")
                 .email("john.doe@freecycle.com")
+                .build();
+    }
+
+    public AuthenticationDTO getAuthenticationDTO() {
+        return AuthenticationDTO.builder()
+                .id(1L)
+                .userName("john.doe")
+                .password("password")
+                .build();
+    }
+
+    public AuthenticationEntity getAuthenticationEntity() {
+        return AuthenticationEntity.builder()
+                .id(1L)
+                .userName("john.doe")
+                .password("encoded_password")
                 .build();
     }
 

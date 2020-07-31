@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-//todo //add tables for pass word and roles
 @Service
 @AllArgsConstructor
 public class UserService {

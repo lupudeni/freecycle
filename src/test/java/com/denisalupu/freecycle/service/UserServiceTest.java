@@ -213,4 +213,16 @@ class UserServiceTest {
         //then
         assertThrows(ForbiddenException.class, () -> sut.update(userDTO, loggedInUserMock));
     }
+
+    @Test
+    void given_unique_email_when_isEmailUnique_then_return_true() {
+        String email ="john.doe@freecycle.com";
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        //when
+        boolean isEmailUnique = sut.isEmailUnique(email);
+
+        //then
+        assertThat(isEmailUnique).isTrue();
+    }
 }

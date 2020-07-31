@@ -546,6 +546,7 @@ class DonationServiceTest {
 
         //then
         assertThrows(ForbiddenException.class, () -> sut.update(donationDTOMock, loggedInUserMock));
-
     }
+
+
 }

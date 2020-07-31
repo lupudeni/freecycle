@@ -31,7 +31,7 @@ class AreaOfAvailabilityServiceTest {
     @InjectMocks
     private AreaOfAvailabilityService sut;
 
-    private TestUtil testUtil = new TestUtil();
+    private final TestUtil testUtil = new TestUtil();
 
     private AreaOfAvailabilityEntity areaEntity;
 

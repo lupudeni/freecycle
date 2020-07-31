@@ -1,13 +1,14 @@
 package com.denisalupu.freecycle.domain.model;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
 @AllArgsConstructor
-
+@EqualsAndHashCode
 public class AuthenticationDetails implements UserDetails {
 
     private final AuthenticationDTO authenticationDTO;
