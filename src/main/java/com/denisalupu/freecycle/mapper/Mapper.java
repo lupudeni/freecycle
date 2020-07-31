@@ -1,11 +1,13 @@
 package com.denisalupu.freecycle.mapper;
 
+import com.denisalupu.freecycle.domain.entity.DonationEntity;
+import com.denisalupu.freecycle.domain.entity.PictureEntity;
+import com.denisalupu.freecycle.domain.model.DonationDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -26,9 +28,18 @@ public class Mapper {
                 .collect(Collectors.toList());
     }
 
-    public <T, R> Set<R> mapCollectionToSet(Collection<T> source, Class<R> destinationClass) {
-        return source.stream()
-                .map(element -> map(element, destinationClass))
-                .collect(Collectors.toSet());
+    public List<DonationDTO> mapDonationDtos(List<DonationEntity> donationEntities) {
+        return donationEntities.stream()
+                .map(this::mapDonationDto)
+                .collect(Collectors.toList());
+    }
+
+    public DonationDTO mapDonationDto(DonationEntity donationEntity) {
+        DonationDTO dto = map(donationEntity, DonationDTO.class);
+        List<Long> pictureIds = donationEntity.getPictures().stream()
+                .map(PictureEntity::getId)
+                .collect(Collectors.toList());
+        dto.setPictureIds(pictureIds);
+        return dto;
     }
 }

@@ -20,5 +20,7 @@ public class PictureEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "donation_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private DonationEntity donation;
 }

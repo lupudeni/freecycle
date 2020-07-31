@@ -60,7 +60,7 @@ public class DonationService {
         List<DonationEntity> donationEntities = donationRepository
                 .findAllByStatusAndCategoryAndAreaAndTitleContains(Status.AVAILABLE, categoryEntity, areaEntity, title);
 
-        return mapper.mapCollectionToList(donationEntities, DonationDTO.class);
+        return mapper.mapDonationDtos(donationEntities);
     }
 
     /**
@@ -72,7 +72,7 @@ public class DonationService {
     public List<DonationDTO> getAllActiveDonations(UserDetails loggedInUser) {
         UserEntity userEntity = userService.findEntityByUserName(loggedInUser.getUsername());
         List<DonationEntity> donationEntities = donationRepository.findAllByDonorAndStatusIn(userEntity, List.of(Status.AVAILABLE, Status.FULLY_REQUESTED));
-        return mapper.mapCollectionToList(donationEntities, DonationDTO.class);
+        return mapper.mapDonationDtos(donationEntities);
     }
 
     /**
@@ -84,7 +84,7 @@ public class DonationService {
     public List<DonationDTO> getAllHistory(UserDetails loggedInUser) {
         UserEntity userEntity = userService.findEntityByUserName(loggedInUser.getUsername());
         List<DonationEntity> donationEntities = donationRepository.findAllByDonorAndStatus(userEntity, Status.DONATED);
-        return mapper.mapCollectionToList(donationEntities, DonationDTO.class);
+        return mapper.mapDonationDtos(donationEntities);
     }
 
     /**

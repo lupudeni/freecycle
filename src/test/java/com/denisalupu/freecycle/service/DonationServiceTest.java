@@ -152,7 +152,7 @@ class DonationServiceTest {
                 .findAllByStatusAndCategoryAndAreaAndTitleContains(Status.AVAILABLE, categoryEntity, areaEntity, title))
                 .thenReturn(donationEntities);
 
-        when(mapper.mapCollectionToList(donationEntities, DonationDTO.class)).thenReturn(donationDTOS);
+        when(mapper.mapDonationDtos(donationEntities)).thenReturn(donationDTOS);
 
         //when
         List<DonationDTO> returnedList = sut.findDonations(categoryId, areaId, title);
@@ -182,7 +182,7 @@ class DonationServiceTest {
                 .findAllByStatusAndCategoryAndAreaAndTitleContains(Status.AVAILABLE, categoryEntity, areaEntity, title))
                 .thenReturn(donationEntities);
 
-        when(mapper.mapCollectionToList(donationEntities, DonationDTO.class)).thenReturn(Collections.emptyList());
+        when(mapper.mapDonationDtos(donationEntities)).thenReturn(Collections.emptyList());
 
         //when
         List<DonationDTO> returnedList = sut.findDonations(categoryId, areaId, title);
@@ -206,7 +206,7 @@ class DonationServiceTest {
         when(donationRepository.findAllByDonorAndStatusIn(donorEntityMock, List.of(Status.AVAILABLE, Status.FULLY_REQUESTED)))
                 .thenReturn(donationEntitiesMock);
 
-        when(mapper.mapCollectionToList(donationEntitiesMock, DonationDTO.class))
+        when(mapper.mapDonationDtos(donationEntitiesMock))
                 .thenReturn(donationDTOS);
 
         //when
@@ -233,7 +233,7 @@ class DonationServiceTest {
         donationDTO.setStatus(Status.DONATED);
         List<DonationDTO> donationDTOS = List.of(donationDTO);
 
-        when(mapper.mapCollectionToList(donationEntitiesMock, DonationDTO.class))
+        when(mapper.mapDonationDtos(donationEntitiesMock))
                 .thenReturn(donationDTOS);
 
         //when
