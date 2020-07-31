@@ -25,3 +25,8 @@ Note that this app uses MySql 8.
 In order to use the email sending functionality, provide the following environment variables:
 * `mailUserName` - the gmail SMTP username 
 * `mailPassword` - the app password for the gmail SMTP user (How to obtain an app password: https://support.google.com/mail/answer/185833?hl=en-GB)
+
+
+#### Open API 3 Documentation
+
+The application exposes a Swagger UI at http://localhost:8080/doc/swagger-ui.html
