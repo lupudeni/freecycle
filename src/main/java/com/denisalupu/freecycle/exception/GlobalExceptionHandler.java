@@ -14,6 +14,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
+    @ExceptionHandler(value = {UnauthorisedException.class})
+    public ResponseEntity<String> handleUnauthorisedException(UnauthorisedException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+    }
+
     @ExceptionHandler(value = {ForbiddenException.class})
     public ResponseEntity<String> handleForbiddenException(ForbiddenException e) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());

@@ -88,6 +88,8 @@ public class DonationController {
         donationService.abandonRequest(donationId, userDetails);
     }
 
+    //todo patch
+    //todo change naming of urls to subst.
     @PutMapping("/giveDonation")
     @ResponseStatus(HttpStatus.OK)
     public void giveDonation(@RequestParam("receiverId") long receiverId,

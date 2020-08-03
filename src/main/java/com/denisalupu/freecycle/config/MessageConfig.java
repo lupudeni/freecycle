@@ -8,7 +8,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 
 @Configuration
 public class MessageConfig {
-
+//todo try without this
     @Bean
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource

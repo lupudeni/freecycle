@@ -124,7 +124,7 @@ class DonationServiceTest {
     void given_nonexistent_id_when_findEntityById_then_throw_exception() {
         //given
         long id = 1L;
-        when(donationRepository.findById(id)).thenReturn(Optional.ofNullable(null));
+        when(donationRepository.findById(id)).thenReturn(Optional.empty());
 
         //then
         assertThrows(EntityNotFoundException.class, () -> sut.findEntityById(id));
