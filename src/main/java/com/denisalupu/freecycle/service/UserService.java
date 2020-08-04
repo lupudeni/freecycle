@@ -7,6 +7,7 @@ import com.denisalupu.freecycle.domain.model.RegistrationDTO;
 import com.denisalupu.freecycle.domain.model.UserDTO;
 import com.denisalupu.freecycle.exception.EntityNotFoundException;
 import com.denisalupu.freecycle.exception.ForbiddenException;
+import com.denisalupu.freecycle.exception.UnauthorisedException;
 import com.denisalupu.freecycle.mapper.Mapper;
 import com.denisalupu.freecycle.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -67,11 +68,11 @@ public class UserService {
     }
 
     public UserEntity findEntityByUserName(String userName) {
-       return userRepository.findByUserName(userName).orElseThrow( () -> new EntityNotFoundException("Incorrect login credentials"));
+       return userRepository.findByUserName(userName).orElseThrow( () -> new UnauthorisedException("Incorrect login credentials"));
     }
 
     public UserDTO findUserByUserName(String userName, UserDetails loggedInUser) {
-        UserEntity userEntity = userRepository.findByUserName(userName).orElseThrow( () -> new EntityNotFoundException("Incorrect login credentials"));
+        UserEntity userEntity = userRepository.findByUserName(userName).orElseThrow( () -> new UnauthorisedException("Incorrect login credentials"));
         if(checkOwnership(loggedInUser, userEntity)) {
             return mapper.map(userEntity, UserDTO.class);
         }

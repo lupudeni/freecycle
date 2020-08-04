@@ -2,6 +2,9 @@ package com.denisalupu.freecycle.controller;
 
 import com.denisalupu.freecycle.domain.model.CategoryDTO;
 import com.denisalupu.freecycle.service.CategoryService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +23,11 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping("/allCategories")
+    @Operation(summary = "Retrieves the list of available categories")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successfully retrieved the category list")
+    })
+    @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
     public List<CategoryDTO> getAllCategories() {
         return categoryService.getAllCategories();

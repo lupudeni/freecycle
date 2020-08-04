@@ -63,42 +63,23 @@ public class DonationService {
         return mapper.mapDonationDtos(donationEntities);
     }
 
-    /**
-     * Gets all donations with status "AVAILABLE" and "FULLY_REQUESTED" posted by the logged in user
-     *
-     * @param loggedInUser currently logged in User
-     * @return List of active donations of current user
-     */
     public List<DonationDTO> getAllActiveDonations(UserDetails loggedInUser) {
         UserEntity userEntity = userService.findEntityByUserName(loggedInUser.getUsername());
         List<DonationEntity> donationEntities = donationRepository.findAllByDonorAndStatusIn(userEntity, List.of(Status.AVAILABLE, Status.FULLY_REQUESTED));
         return mapper.mapDonationDtos(donationEntities);
     }
 
-    /**
-     * Gets all donations with status "DONATED" posted by the logged in user
-     *
-     * @param loggedInUser currently logged in user
-     * @return List of past donations of current user
-     */
     public List<DonationDTO> getAllHistory(UserDetails loggedInUser) {
         UserEntity userEntity = userService.findEntityByUserName(loggedInUser.getUsername());
         List<DonationEntity> donationEntities = donationRepository.findAllByDonorAndStatus(userEntity, Status.DONATED);
         return mapper.mapDonationDtos(donationEntities);
     }
 
-    /**
-     * Gets all donations requested by the logged in user
-     *
-     * @param loggedInUser currently logged in user
-     * @return List of requested donations
-     */
     public List<DonationDTO> getAllRequests(UserDetails loggedInUser) {
         UserEntity userEntity = userService.findEntityByUserName(loggedInUser.getUsername());
         Set<DonationEntity> donationEntities = userEntity.getRequestedDonations();
         return mapper.mapCollectionToList(donationEntities, DonationDTO.class);
     }
-
 
     @Transactional
     public DonationDTO requestDonation(long donationId, UserDetails loggedInUser) {
