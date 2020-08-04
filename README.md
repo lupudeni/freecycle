@@ -17,6 +17,11 @@ When posting a donation, the user is required to specify a category, title, desc
 
 #### Application requirements
 
+##### Data Source
+Provide the following environment variables:
+* `dataSourceUserName` 
+* `dataSourcePassword`
+
 ##### DB Schema
 In order for Flyway to be able to create the DB, make sure you have a `freecycle` schema created.
 Note that this app uses MySql 8.
